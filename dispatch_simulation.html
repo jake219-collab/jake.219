@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnW → 링키지랩 발주 시뮬레이션</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1F4F2;--surface:#FFFFFF;--surface1:#F5F6F4;
+    --ink:#1E2A28;--ink-soft:#5B6B67;--line:#DCE5E0;
+    --teal:#0E6B5C;--teal-deep:#0A4F45;--mint:#DFEFE9;
+    --rose:#9C3B2E;--rose-bg:#F5E1DD;
+    --amber:#A8531E;--amber-bg:#F7E9DD;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1100px;margin:0 auto;padding:48px 28px 80px;}
+  h1{font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:clamp(24px,3.5vw,34px);margin:0 0 8px;}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0 0 32px;}
+  .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;}
+  .card .lbl{font-size:12px;color:var(--ink-soft);margin:0 0 6px;}
+  .card .val{font-size:26px;font-weight:700;font-family:'Roboto Mono', monospace;margin:0;color:var(--ink);}
+  .card .val.ok{color:var(--teal-deep);}
+  .card .val.bad{color:var(--rose);}
+  .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+  .input-panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+  .input-panel h2{font-size:14px;font-weight:700;color:var(--teal-deep);margin:0 0 14px;}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;font-size:13px;}
+  .fields span{color:var(--ink-soft);}
+  .fields input{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;font-family:'Roboto Mono', monospace;font-size:13px;background:#FAFBFA;color:var(--ink);}
+  .fields input:focus{outline:2px solid var(--teal);outline-offset:1px;background:#fff;}
+  .note{font-size:11.5px;color:var(--ink-soft);margin:10px 0 0;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{padding:10px 14px;text-align:left;color:var(--ink-soft);font-weight:500;background:var(--surface1);border-bottom:1px solid var(--line);}
+  th:not(:first-child){text-align:right;}
+  td{padding:9px 14px;border-bottom:1px solid var(--line);}
+  td:not(:first-child){text-align:right;}
+  tfoot td{background:var(--surface1);font-weight:700;}
+  .tbl-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+  .info{background:var(--mint);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--teal-deep);}
+  footer{morgin-top:32px;font-size:12px;color:var(--ink-soft);}
+  @media(max-width:700px){
+    .summary-grid{grid-template-columns:1fr 1fr;}
+    .input-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>KnW → 링키지랩 발주 시뮬레이션</h1>
+  <p class="sub">업쬀 유형 · 귰무 오옔 · 장애 업 �� 있원 인원을 입력하면 월/연 발주 총액�� KnW 장애인 고용율 기엮됸은 자동냀회</p>
+
+  <div class="summary-grid">
+    <div class="card"><p class="lbl">총 발주 인원</p><p class="val" id="s1">0명</p></div>
+    <div class="card"><p class="lbl">월 발주 총액</p><p class="val" id="s2">0원</p></div>
+    <div class="card"><p class="lbl">연 발주 총액</p><p class="val" id="s3">0원</p></div>
+    <div class="card"><p class="lbl">발주 기여 고용율</p><p class="val" id="s4">0.00%</p></div>
+  </div>
+
+  <div class="input-grid">
+    <div class="input-panel">
+      <h2>IT 운영 업무</h2>
+      <div class="fields">
+        <span>4H 중증</span><input type="number" id="it4h_heavy" value="0" min="0">
+        <span>4H 경증</span><input type="number" id="it4h_mild"  value="0" min="0">
+        <span>8H 중증</span><input type="number" id="it8h_heavy" value="0" min="0">
+        <span>8H 경증</span><input type="number" id="it8h_mild"  value="0" min="0">
+      </div>
+      <p class="note">4H 1,896,000원 / 8H 3,792,000원</p>
+    </div>
+    <div class="input-panel">
+      <h2>복지 업무 (카페·스낵 등)</h2>
+      <div class="fields">
+        <span>4H 중증</span><input type="number" id="wf4h_heavy" value="0" min="0">
+        <span>4H 경증</span><input type="number" id="wf4h_mild"  value="0" min="0">
+      </div>
+      <p class="note">4H만 가능 · 1,886,500원</p>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%">구분</th>
+          <th style="width:12%">인원</th>
+          <th style="width:22%">인건비/인</th>
+          <th style="width:24%">월 발주액</th>
+          <th style="width:14%">고용율 기여</th>
+        </tr>
+      </thead>
+      <tbody id="simBody"></tbody>
+      <tfoot id="simFoot"></tfoot>
+    </table>
+  </div>
+
+  <div class="info">KnW 상시근로자 772명 기준 · 고용율 기여 인원은 환산인원(중증×2 + 경증) 합산</div>
+
+  <footer>장애인 고용 시뮬레이션 · 링키지랩 전략기획팀</footer>
+</div>
+
+<script>
+const rows=[
+  {id:'it4h_heavy',label:'IT 4H 중증',labor:1896000,weight:2},
+  {id:'it4h_mild', label:'IT 4H 경증',labor:1896000,weight:1},
+  {id:'it8h_heavy',label:'IT 8H 중증',labor:3792000,weight:2},
+  {id:'it8h_mild', label:'IT 8H 경증',labor:3792000,weight:1},
+  {id:'wf4h_heavy',label:'복지 4H 중증',labor:1886500,weight:2},
+  {id:'wf4h_mild', label:'복지 4H 경증',labor:1886500,weight:1},
+];
+const KNW=772;
+const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+const fmtW=n=>fmt(n)+'원';
+const fmtPct=n=>n.toFixed(2)+'%';
+
+function compute(){
+  const body=document.getElementById('simBody');
+  const foot=document.getElementById('simFoot');
+  body.innerHTML='';
+  let total=0,totalM=0,totalW=0;
+  rows.forEach(r=>{
+    const n=parseInt(document.getElementById(r.id).value)||0;
+    if(!n)return;
+    const m=r.labor*n, w=r.weight*n;
+    total+=n; totalM+=m; totalW+=w;
+    body.insertAdjacentHTML('beforeend',`
+      <tr>
+        <td>${r.label}</td>
+        <td style="text-align:right">${n}</td>
+        <td style="text-align:right;color:#5B6B67">${fmtW(r.labor)}</td>
+        <td style="text-align:right;font-weight:500">${fmtW(m)}</td>
+        <td style="text-align:right;color:#0A4F45">${w}명</td>
+      </tr>`);
+  });
+  const rate=totalW/KNW*100;
+  const ok=rate>=3.1;
+  foot.innerHTML=`
+    <tr>
+      <td>합계</td>
+      <td style="text-align:right">${total}명</td>
+      <td style="text-align:right;font-size:12px;color:#5B6B67">환산 ${totalW}명</td>
+      <td style="text-align:right">${fmtW(totalM)}</td>
+      <td style="text-align:right;color:${ok?'#0A4F45':'#9C3B2E'}">${fmtPct(rate)}</td>
+    </tr>`;
+  document.getElementById('s1').textContent=total+'명';
+  document.getElementById('s2').textContent=fmtW(totalM);
+  document.getElementById('s3').textContent=fmtW(totalM*12);
+  const s4=document.getElementById('s4');
+  s4.textContent=fmtPct(rate);
+  s4.className='val '+(ok?'ok':'bad');
+}
+rows.forEach(r=>document.getElementById(r.id).addEventListener('input',compute));
+compute();
+</script>
+</body>
+</html>
