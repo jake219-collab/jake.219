@@ -56,7 +56,6 @@
     <div class="card"><p class="lbl">총 발주 인원</p><p class="val" id="s1">0명</p></div>
     <div class="card"><p class="lbl">월 발주 총액</p><p class="val" id="s2">0원</p></div>
     <div class="card"><p class="lbl">연 발주 총액</p><p class="val" id="s3">0원</p></div>
-    <div class="card"><p class="lbl">발주 기여 고용율</p><p class="val" id="s4">0.00%</p></div>
   </div>
 
   <div class="input-grid">
@@ -141,15 +140,12 @@ function compute(){
       <td>합계</td>
       <td style="text-align:right">${total}명</td>
       <td style="text-align:right;font-size:12px;color:#5B6B67">환산 ${totalW}명</td>
-      <td style="text-align:right">${fmtK(totalM)}</td>
+      <td style="text-align:right">${fmtW(totalM)}</td>
       <td style="text-align:right;color:${ok?'#0A4F45':'#9C3B2E'}">${fmtPct(rate)}</td>
     </tr>`;
   document.getElementById('s1').textContent=total+'명';
   document.getElementById('s2').textContent=fmtW(totalM);
   document.getElementById('s3').textContent=fmtW(totalM*12);
-  const s4=document.getElementById('s4');
-  s4.textContent=fmtPct(rate);
-  s4.className='val '+(ok?'ok':'bad');
 }
 rows.forEach(r=>document.getElementById(r.id).addEventListener('input',compute));
 compute();
