@@ -65,7 +65,7 @@
   }
   .grid{
     display:grid;
-    grid-template-columns:300px 1fr;
+    grid-template-columns:360px 1fr;
     gap:24px;
     align-items:start;
   }
@@ -167,8 +167,8 @@
     top:24px;
   }
   .field-group{
-    margin-bottom:18px;
-    padding:14px 14px 16px;
+    margin-bottom:20px;
+    padding:16px 16px 18px;
     border:2px solid var(--line);
     border-radius:10px;
   }
@@ -182,12 +182,12 @@
     background:#F8F4FB;
   }
   .field-group h3{
-    font-size:12px;
+    font-size:14px;
     font-weight:700;
-    letter-spacing:.04em;
+    letter-spacing:.03em;
     color:var(--ink-soft);
-    margin:0 0 10px;
-    padding-bottom:6px;
+    margin:0 0 12px;
+    padding-bottom:8px;
     border-bottom:1px dashed var(--line);
     display:flex;
     align-items:center;
@@ -208,23 +208,25 @@
   .badge-shared{ background:#EDEFEC; color:var(--ink-soft); }
   label{
     display:block;
-    font-size:13px;
+    font-size:14px;
     color:var(--ink);
-    margin-bottom:12px;
+    margin-bottom:14px;
   }
   label:last-child{margin-bottom:0;}
   label span.lbl{
     display:block;
-    margin-bottom:6px;
+    margin-bottom:7px;
     color:var(--ink-soft);
+    font-size:13px;
+    font-weight:500;
   }
   input[type=number]{
     width:100%;
-    padding:9px 10px;
+    padding:10px 12px;
     border:1px solid var(--line);
     border-radius:8px;
     font-family:'Roboto Mono', monospace;
-    font-size:14px;
+    font-size:15px;
     font-weight:500;
     color:var(--ink);
     background:#FAFBFA;
@@ -246,25 +248,25 @@
     justify-content:space-between;
     align-items:baseline;
     gap:8px;
-    margin-top:-2px;
-    padding:10px 10px;
+    margin-top:6px;
+    padding:11px 12px;
     background:var(--mint);
     border-radius:8px;
-    font-size:12px;
+    font-size:13px;
     color:var(--teal-deep);
     line-height:1.4;
   }
   .computed-line .computed-val{
     font-family:'Roboto Mono', monospace;
     font-weight:700;
-    font-size:15px;
+    font-size:16px;
     white-space:nowrap;
   }
 
   .type-table{
     display:grid;
     grid-template-columns:1fr 56px 56px;
-    gap:6px 8px;
+    gap:8px 8px;
     align-items:center;
   }
   .type-table-mid{
@@ -301,14 +303,14 @@
     display:contents;
   }
   .type-table-row .type-name{
-    font-size:12.5px;
+    font-size:13.5px;
     color:var(--ink);
   }
   .type-table-row input[type=number]{
     width:100%;
-    padding:6px 4px;
+    padding:7px 4px;
     text-align:center;
-    font-size:13px;
+    font-size:14px;
   }
   .type-table-row.total-row{
     margin-top:4px;
@@ -489,7 +491,6 @@
             <span>KnW + 링키지랩 지분 귀속 인원 합산</span>
             <span class="computed-val" id="knwTotalEffective">0</span>
           </div>
-          <div class="hint">고용율 계산 분모로 사용됩니다.</div>
         </label>
         <label>
           <span class="lbl">KnW 상시 근로자</span>
