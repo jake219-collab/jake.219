@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>장애인 고용 시뮬레이션</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1F4F2;
+    --surface:#FFFFFF;
+    --ink:#1E2A28;
+    --ink-soft:#5B6B67;
+    --line:#DCE5E0;
+    --teal:#0E6B5C;
+    --teal-deep:#0A4F45;
+    --mint:#DFEFE9;
+    --amber:#A8531E;
+    --amber-bg:#F7E9DD;
+    --rose:#9C3B2E;
+    --rose-bg:#F5E1DD;
+    --violet:#6B4C93;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:48px 28px 80px;
+  }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:12px;
+    font-weight:700;
+    color:var(--teal);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:900;
+    font-size:clamp(26px,4vw,38px);
+    line-height:1.25;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    line-height:1.6;
+    max-width:640px;
+    margin:0;
+  }
+  header.hero{
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:32px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:24px;
+    align-items:start;
+  }
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:24px;
+  }
+  .panel h2{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:17px;
+    font-weight:700;
+    margin:0 0 18px;
+    color:var(--teal-deep);
+  }
+  .panel-head-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .panel-head-row h2{
+    margin:0;
+  }
+  .panel-head-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .save-btn{
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:9px 16px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .save-btn:hover{ background:var(--teal-deep); }
+  .save-btn:disabled{ opacity:.6; cursor:default; }
+  .clear-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    border-radius:8px;
+    padding:7px 12px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .clear-btn:hover{ border-color:var(--rose); color:var(--rose); }
+
+  .history-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    max-height:340px;
+    overflow-y:auto;
+  }
+  .history-row{
+    display:grid;
+    grid-template-columns:130px 70px 1fr auto;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    background:#FAFBFA;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:12.5px;
+  }
+  .history-date{
+    color:var(--ink-soft);
+    font-family:'Roboto Mono', monospace;
+    font-size:12px;
+  }
+  .history-rate{
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+    font-size:14px;
+  }
+  .history-detail{
+    color:var(--ink-soft);
+  }
+  .history-del{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-size:12px;
+    cursor:pointer;
+    padding:4px 6px;
+  }
+  .history-del:hover{ color:var(--rose); }
+  .inputs{
+    position:sticky;
+    top:24px;
+  }
+  .field-group{
+    margin-bottom:18px;
+    padding:14px 14px 16px;
+    border:2px solid var(--line);
+    border-radius:10px;
+  }
+  .field-group:last-child{margin-bottom:0;}
+  .field-group.group-knw{
+    border-color:var(--teal);
+    background:#F3FAF8;
+  }
+  .field-group.group-llab{
+    border-color:var(--violet);
+    background:#F8F4FB;
+  }
+  .field-group h3{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+    padding-bottom:6px;
+    border-bottom:1px dashed var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .badge{
+    display:inline-block;
+    padding:3px 9px;
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:0;
+    white-space:nowrap;
+  }
+  .badge-knw{ background:var(--mint); color:var(--teal-deep); }
+  .badge-llab{ background:#EFE6F5; color:var(--violet); }
+  .badge-shared{ background:#EDEFEC; color:var(--ink-soft); }
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--ink);
+    margin-bottom:12px;
+  }
+  label:last-child{margin-bottom:0;}
+  label span.lbl{
+    display:block;
+    margin-bottom:6px;
+    color:var(--ink-soft);
+  }
+  input[type=number]{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-family:'Roboto Mono', monospace;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink);
+    background:#FAFBFA;
+  }
+  input[type=number]:focus{
+    outline:2px solid var(--teal);
+    outline-offset:1px;
+    background:#fff;
+  }
+  .hint{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:5px;
+    line-height:1.4;
+  }
+
+  .computed-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:8px;
+    margin-top:-2px;
+    padding:10px 10px;
+    background:var(--mint);
+    border-radius:8px;
+    font-size:12px;
+    color:var(--teal-deep);
+    line-height:1.4;
+  }
+  .computed-line .computed-val{
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+    font-size:15px;
+    white-space:nowrap;
+  }
+
+  .type-table{
+    display:grid;
+    grid-template-columns:1fr 56px 56px;
+    gap:6px 8px;
+    align-items:center;
+  }
+  .type-table-mid{
+    grid-template-columns:1fr 48px 48px 48px;
+  }
+  .type-table-mid .val{
+    text-align:center;
+    font-family:'Roboto Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .type-table-mid .total-row .val{
+    color:var(--teal-deep);
+    font-weight:700;
+  }
+  #knwHeadcountTotal{
+    font-size:16px;
+    font-weight:900;
+    background:var(--mint);
+    border-radius:6px;
+    padding:3px 4px;
+  }
+  .type-table-head{
+    display:contents;
+  }
+  .type-table-head span{
+    font-size:11px;
+    color:var(--ink-soft);
+    font-weight:700;
+    text-align:center;
+  }
+  .type-table-head span:first-child{ text-align:left; }
+  .type-table-row{
+    display:contents;
+  }
+  .type-table-row .type-name{
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  .type-table-row input[type=number]{
+    width:100%;
+    padding:6px 4px;
+    text-align:center;
+    font-size:13px;
+  }
+  .type-table-row.total-row{
+    margin-top:4px;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
+  .type-table-row.total-row .type-name{
+    font-weight:700;
+    color:var(--teal-deep);
+  }
+  .type-table-row.total-row .val{
+    text-align:center;
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+    color:var(--teal-deep);
+  }
+
+  .placed-block{
+    margin-top:26px;
+    padding:16px;
+    border:2px solid var(--ink-soft);
+    border-radius:10px;
+    background:#F5F6F4;
+  }
+  .placed-block h3{
+    font-size:13px;
+    font-weight:700;
+    color:var(--teal-deep);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .placed-block .type-table{
+    max-width:340px;
+  }
+  .type-table-4{
+    grid-template-columns:1fr 52px 52px 56px;
+  }
+
+  .right-col{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+
+  .rate-row{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  #rateBig{
+    font-family:'Roboto Mono', monospace;
+    font-size:52px;
+    font-weight:700;
+    color:var(--teal-deep);
+    line-height:1;
+  }
+  .rate-tag{
+    font-size:13px;
+    font-weight:700;
+    padding:5px 11px;
+    border-radius:999px;
+  }
+  .tag-ok{background:var(--mint); color:var(--teal-deep);}
+  .tag-warn{background:var(--amber-bg); color:var(--amber);}
+  .tag-bad{background:var(--rose-bg); color:var(--rose);}
+  .rate-formula{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-family:'Roboto Mono', monospace;
+  }
+
+  .stairs{
+    display:flex;
+    align-items:flex-end;
+    gap:18px;
+    margin-top:28px;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+    min-height:220px;
+  }
+  .step{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    height:220px;
+    position:relative;
+  }
+  .step .rate-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .step .actual-rate{
+    font-family:'Roboto Mono', monospace;
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .step .gap-num{
+    font-family:'Roboto Mono', monospace;
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .step .bar{
+    width:64%;
+    border-radius:8px 8px 0 0;
+    transition:height .25s ease;
+  }
+  .bar-bad{background:linear-gradient(180deg,#C6553A,var(--rose));}
+  .bar-warn{background:linear-gradient(180deg,#C77A3A,var(--amber));}
+  .bar-ok{background:linear-gradient(180deg,#3E9A82,var(--teal));}
+  .step .year-label{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .step .year-label b{color:var(--ink);}
+
+  .equity-ref .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .equity-ref .row:last-child{border-bottom:none;}
+  .equity-ref .row .val{
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+  }
+  .diff-pos{color:var(--teal-deep);}
+  .diff-neg{color:var(--rose);}
+
+  footer{
+    margin-top:36px;
+    font-size:12px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+
+  @media (max-width:860px){
+    .grid{grid-template-columns:1fr;}
+    .inputs{position:static;}
+    .stairs{min-height:180px;}
+    .step{height:180px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <h1>장애인 고용 시뮬레이션</h1>
+    <p class="sub">케이앤웍스(KnW)가 링키지랩 지분 6%를 보유하였을 경우, 연도별 장애인 고용율을 확인합니다.</p>
+  </header>
+
+  <div class="grid">
+
+    <section class="panel inputs">
+      <h2>입력값</h2>
+
+      <div class="field-group group-knw">
+        <h3>케이앤웍스(KnW)<span class="badge badge-knw">KnW 입력</span></h3>
+        <label>
+          <span class="lbl">상시근로자 수 (링키지랩 근로자 포함)</span>
+          <div class="computed-line">
+            <span>KnW + 링키지랩 지분 귀속 인원 합산</span>
+            <span class="computed-val" id="knwTotalEffective">0</span>
+          </div>
+          <div class="hint">고용율 계산 분모로 사용됩니다.</div>
+        </label>
+        <label>
+          <span class="lbl">KnW 상시 근로자</span>
+          <input type="number" id="knwBaseTotal" value="772" min="0">
+        </label>
+
+        <div class="type-table">
+          <div class="type-table-head">
+            <span></span><span>경증</span><span>중증</span>
+          </div>
+          <div class="type-table-row">
+            <span class="type-name">정규직</span>
+            <input type="number" id="knwRegularMild" value="4" min="0">
+            <input type="number" id="knwRegularSevere" value="3" min="0">
+          </div>
+          <div class="type-table-row">
+            <span class="type-name">계약직</span>
+            <input type="number" id="knwContractMild" value="7" min="0">
+            <input type="number" id="knwContractSevere" value="1" min="0">
+          </div>
+          <div class="type-table-row">
+            <span class="type-name">스포츠선수단</span>
+            <input type="number" id="knwSportsMild" value="0" min="0">
+            <input type="number" id="knwSportsSevere" value="6" min="0">
+          </div>
+          <div class="type-table-row total-row">
+            <span class="type-name">합계</span>
+            <span class="val" id="knwMildTotal">0</span>
+            <span class="val" id="knwSevereTotal">0</span>
+          </div>
+        </div>
+        <div class="computed-line">
+          <span>경증+중증 전체 인원</span>
+          <span class="computed-val" id="knwHeadcountTotal">0</span>
+        </div>
+        <div class="hint">중증 1인은 고용율 산정 시 2인으로 계산됩니다.</div>
+      </div>
+
+      <div class="field-group group-llab">
+        <h3>링키지랩<span class="badge badge-llab">링키지랩 입력</span></h3>
+        <label>
+          <span class="lbl">KnW 보유 지분율 (%)</span>
+          <input type="number" id="equityPct" value="0" min="0" max="100" step="0.1">
+        </label>
+        <label>
+          <span class="lbl">링키지랩 장애인 수 (합계)</span>
+          <input type="number" id="llabOwn" value="263" min="0">
+          <div class="hint">오른쪽 "KnW가 링키지랩에 채용하고 있는 인원"을 늘리거나 줄이면 이 숫자에 자동으로 더해지거나 빠집니다. 직접 수정해도 되며, 이후 KnW 채용인원이 바뀌면 그 변화분만큼 다시 반영됩니다.</div>
+        </label>
+        <div class="computed-line">
+          <span>KnW에 배정되는 링키지랩 장애인 수 (배정비율 <span id="assignPctLabel">6.0</span>%)</span>
+          <span class="computed-val" id="assignedCount">0</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="right-col">
+
+      <section class="panel">
+        <div class="panel-head-row">
+          <h2>KnW 장애인 고용율 현황</h2>
+        </div>
+        <div class="rate-row">
+          <span id="rateBig">0.0%</span>
+          <span class="rate-tag" id="rateTag">-</span>
+        </div>
+        <div class="rate-formula" id="rateFormula"></div>
+
+        <div class="stairs" id="stairs"></div>
+
+        <div class="placed-block">
+          <h3>KnW가 링키지랩에 채용하고 있는 인원<span class="badge badge-shared">공통 입력</span></h3>
+          <div class="type-table type-table-4">
+            <div class="type-table-head">
+              <span></span><span>경증</span><span>중증</span><span>합계</span>
+            </div>
+            <div class="type-table-row">
+              <span class="type-name">현재 고용 인원 (바리스타)</span>
+              <input type="number" id="knwPlacedMild" value="0" min="0">
+              <input type="number" id="knwPlacedSevere" value="2" min="0">
+              <span class="val" id="knwPlacedRowSum">0</span>
+            </div>
+            <div class="type-table-row">
+              <span class="type-name">추가 고용</span>
+              <input type="number" id="knwExtraMild" value="0" min="0">
+              <input type="number" id="knwExtraSevere" value="0" min="0">
+              <span class="val" id="knwExtraRowSum">0</span>
+            </div>
+            <div class="type-table-row total-row">
+              <span class="type-name">합계</span>
+              <span class="val" id="knwPlacedMildTotal">0</span>
+              <span class="val" id="knwPlacedSevereTotal">0</span>
+              <span class="val" id="knwPlacedGrandTotal">0</span>
+            </div>
+          </div>
+          <div class="hint">합계(오른쪽) 숫자가 링키지랩 장애인 수(합계)에 자동으로 더해지며, 중증 1명은 2명으로 계산됩니다.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head-row">
+          <h2>저장된 히스토리</h2>
+          <div class="panel-head-actions">
+            <button id="saveBtn" class="save-btn">현재 값 저장</button>
+            <button id="clearHistoryBtn" class="clear-btn">전체 삭제</button>
+          </div>
+        </div>
+        <div id="historyList" class="history-list">
+          <div class="hint">불러오는 중...</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer>
+    ※ 카카오 및 그룹사가 장애인 고용을 하지 않을 경우는 이 시뮬레이션에서 제외합니다.<br>
+    목표율: 2026년 3.1% · 2027년 3.3% · 2029년 3.5% (예정) · 미충족 시 부담금 발생. 부족인원은 환산인원(중증×2+경증) 기준입니다.
+  </footer>
+</div>
+
+<script>
+  const ids = ['knwBaseTotal','knwRegularMild','knwRegularSevere','knwContractMild','knwContractSevere','knwSportsMild','knwSportsSevere','equityPct','llabOwn','knwPlacedSevere','knwPlacedMild','knwExtraSevere','knwExtraMild'];
+  ids.forEach(id => document.getElementById(id).addEventListener('input', compute));
+
+  const targets = [
+    {year:'2026', rate:3.1},
+    {year:'2027', rate:3.3},
+    {year:'2029', rate:3.5}
+  ];
+
+  function num(id){
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? 0 : v;
+  }
+
+  let prevPlacedTotal = num('knwPlacedSevere')*2 + num('knwPlacedMild') + num('knwExtraSevere')*2 + num('knwExtraMild');
+  let latestSnapshot = null;
+
+  function fmt(n, digits=0){
+    return n.toLocaleString('ko-KR', {maximumFractionDigits:digits, minimumFractionDigits:digits});
+  }
+
+  function compute(){
+    const knwBaseTotal = num('knwBaseTotal');
+    const equityPct = num('equityPct');
+    const llabOwn = num('llabOwn');
+    // 링키지랩 지분 귀속 인원 (고용율 분자에 더해지는 값, 분모에도 동일하게 반영)
+    const equityAttributed = Math.floor(llabOwn * equityPct / 100);
+    const knwTotalEffective = knwBaseTotal + equityAttributed;
+    document.getElementById('knwTotalEffective').textContent = fmt(knwTotalEffective) + '명';
+
+    // 링키지랩 실제 배치 인원(가중치 없는 실인원) = 상시근로자에 추가
+    const knwPlacedSevere = num('knwPlacedSevere');
+    const knwPlacedMild = num('knwPlacedMild');
+    const knwExtraSevere = num('knwExtraSevere');
+    const knwExtraMild = num('knwExtraMild');
+    const llabHeadcount = (knwPlacedSevere + knwExtraSevere) + (knwPlacedMild + knwExtraMild);
+    const knwMild = num('knwRegularMild') + num('knwContractMild') + num('knwSportsMild');
+    const knwSevere = num('knwRegularSevere') + num('knwContractSevere') + num('knwSportsSevere');
+    document.getElementById('knwMildTotal').textContent = fmt(knwMild);
+    document.getElementById('knwSevereTotal').textContent = fmt(knwSevere);
+    document.getElementById('knwHeadcountTotal').textContent = fmt(knwMild + knwSevere);
+
+    document.getElementById('knwPlacedRowSum').textContent = fmt(knwPlacedSevere*2 + knwPlacedMild);
+    document.getElementById('knwExtraRowSum').textContent = fmt(knwExtraSevere*2 + knwExtraMild);
+    document.getElementById('knwPlacedMildTotal').textContent = fmt(knwPlacedMild + knwExtraMild);
+    document.getElementById('knwPlacedSevereTotal').textContent = fmt(knwPlacedSevere + knwExtraSevere);
+
+    const placedTotal = (knwPlacedSevere + knwExtraSevere)*2 + (knwPlacedMild + knwExtraMild);
+    document.getElementById('knwPlacedGrandTotal').textContent = fmt(placedTotal);
+    const placedDelta = placedTotal - prevPlacedTotal;
+    if (placedDelta !== 0){
+      const llabOwnInput = document.getElementById('llabOwn');
+      llabOwnInput.value = llabOwn + placedDelta;
+      prevPlacedTotal = placedTotal;
+    }
+    const llabDisabled = num('llabOwn');
+
+    const knwOwnWeighted = knwSevere*2 + knwMild;
+    const knwWeighted = knwOwnWeighted + equityAttributed;
+    const knwRate = knwTotalEffective > 0 ? (knwWeighted / knwTotalEffective * 100) : 0;
+
+    document.getElementById('rateBig').textContent = fmt(knwRate,2) + '%';
+    document.getElementById('rateFormula').textContent =
+      `(중증 ${fmt(knwSevere)}×2 + 경증 ${fmt(knwMild)} + 지분기여 ${fmt(equityAttributed)}) ÷ 실질상시근로자 ${fmt(knwTotalEffective)}명`;
+
+    const currentTarget = targets[0].rate;
+    const currentGap = knwTotalEffective * currentTarget / 100 - knwWeighted;
+    const tag = document.getElementById('rateTag');
+    if (knwTotalEffective === 0){
+      tag.textContent = '입력 필요';
+      tag.className = 'rate-tag tag-warn';
+    } else if (Math.floor(currentGap) <= 0){
+      tag.textContent = `${currentTarget}% 기준 충족`;
+      tag.className = 'rate-tag tag-ok';
+    } else {
+      tag.textContent = `${currentTarget}% 기준 미달`;
+      tag.className = 'rate-tag tag-bad';
+    }
+
+    // 계단식 부족인원 시각화
+    const stairsEl = document.getElementById('stairs');
+    stairsEl.innerHTML = '';
+
+    const gaps = targets.map(t => {
+      const required = knwTotalEffective * t.rate / 100;
+      const gap = required - knwWeighted; // 양수면 부족, 음수/0이면 충족
+      return {...t, required, gap};
+    });
+    const maxAbsGap = Math.max(1, ...gaps.map(g => Math.abs(g.gap)));
+
+    gaps.forEach(g => {
+      const step = document.createElement('div');
+      step.className = 'step';
+
+      const rateLabel = document.createElement('div');
+      rateLabel.className = 'rate-label';
+      rateLabel.textContent = `목표 ${g.rate}%`;
+      step.appendChild(rateLabel);
+
+      const actualRate = document.createElement('div');
+      actualRate.className = 'actual-rate';
+      actualRate.textContent = `실제 ${fmt(knwRate,2)}%`;
+      actualRate.style.color = (g.gap <= 0 || Math.floor(g.gap) <= 0) ? 'var(--teal-deep)' : 'var(--rose)';
+      step.appendChild(actualRate);
+
+      const gapNum = document.createElement('div');
+      gapNum.className = 'gap-num';
+      let barClass, heightPct;
+      if (g.gap > 0 && Math.floor(g.gap) > 0){
+        const gapFloor = Math.floor(g.gap);
+        gapNum.textContent = `부족 ${fmt(gapFloor)}`;
+        gapNum.style.color = g.gap / (knwTotalEffective*g.rate/100 || 1) > 0.3 ? 'var(--rose)' : 'var(--amber)';
+        barClass = g.gap / (knwTotalEffective*g.rate/100 || 1) > 0.3 ? 'bar-bad' : 'bar-warn';
+        heightPct = Math.max(10, (Math.abs(g.gap)/maxAbsGap)*100);
+      } else {
+        const surplusFloor = Math.floor(Math.abs(g.gap));
+        gapNum.textContent = `충족 +${fmt(surplusFloor)}`;
+        gapNum.style.color = 'var(--teal-deep)';
+        barClass = 'bar-ok';
+        heightPct = Math.max(10, (Math.abs(g.gap)/maxAbsGap)*100);
+      }
+      step.appendChild(gapNum);
+
+      const bar = document.createElement('div');
+      bar.className = 'bar ' + barClass;
+      bar.style.height = heightPct + '%';
+      step.appendChild(bar);
+
+      const yearLabel = document.createElement('div');
+      yearLabel.className = 'year-label';
+      yearLabel.innerHTML = `<b>${g.year}년</b>`;
+      step.appendChild(yearLabel);
+
+      stairsEl.appendChild(step);
+    });
+
+    // KnW에 배정되는 링키지랩 장애인 수: 지분율 기준 자동 계산 (내림)
+    document.getElementById('assignPctLabel').textContent = fmt(equityPct,1);
+    document.getElementById('assignedCount').textContent = fmt(equityAttributed);
+
+    latestSnapshot = {
+      knwTotal: knwBaseTotal, knwSevere, knwMild, equityPct,
+      llabOwn: llabDisabled, knwRate, equityAttributed
+    };
+  }
+
+  compute();
+
+  // ===== 히스토리 저장/조회 =====
+
+  function historyDateLabel(ts){
+    return new Date(ts).toLocaleString('ko-KR', {
+      year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
+    });
+  }
+
+  async function loadHistory(){
+    const listEl = document.getElementById('historyList');
+    try{
+      const listRes = await window.storage.list('snapshot:', false);
+      const keys = (listRes && listRes.keys) ? listRes.keys : [];
+      if (keys.length === 0){
+        listEl.innerHTML = '<div class="hint">아직 저장된 값이 없습니다. "현재 값 저장"을 눌러 기록을 남겨보세요.</div>';
+        return;
+      }
+      const items = [];
+      for (const k of keys){
+        try{
+          const r = await window.storage.get(k, false);
+          if (r && r.value) items.push(JSON.parse(r.value));
+        }catch(e){ /* 개별 항목 오류는 건너뜀 */ }
+      }
+      items.sort((a,b) => b.ts - a.ts);
+      renderHistory(items);
+    }catch(e){
+      listEl.innerHTML = '<div class="hint">히스토리를 불러오지 못했습니다.</div>';
+    }
+  }
+
+  function renderHistory(items){
+    const listEl = document.getElementById('historyList');
+    if (items.length === 0){
+      listEl.innerHTML = '<div class="hint">아직 저장된 값이 없습니다. "현재 값 저장"을 눌러 기록을 남겨보세요.</div>';
+      return;
+    }
+    listEl.innerHTML = items.map(it => `
+      <div class="history-row">
+        <span class="history-date">${it.dateLabel}</span>
+        <span class="history-rate" style="color:${it.knwRate >= 3.1 ? 'var(--teal-deep)' : 'var(--rose)'}">${it.knwRate.toFixed(2)}%</span>
+        <span class="history-detail">상시근로자 ${it.knwTotal.toLocaleString('ko-KR')}명 · 링키지랩 장애인 ${it.llabOwn.toLocaleString('ko-KR')}명 · 지분율 ${it.equityPct}%</span>
+        <button class="history-del" data-key="${it.key}">삭제</button>
+      </div>
+    `).join('');
+    listEl.querySelectorAll('.history-del').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try{
+          await window.storage.delete(btn.dataset.key, false);
+          loadHistory();
+        }catch(e){ /* 무시 */ }
+      });
+    });
+  }
+
+  document.getElementById('saveBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+    try{
+      const ts = Date.now();
+      const key = 'snapshot:' + ts;
+      const snapshot = Object.assign({ key, ts, dateLabel: historyDateLabel(ts) }, latestSnapshot);
+      const result = await window.storage.set(key, JSON.stringify(snapshot), false);
+      if (!result) throw new Error('save failed');
+      await loadHistory();
+    }catch(e){
+      alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }finally{
+      btn.disabled = false;
+      btn.textContent = '현재 값 저장';
+    }
+  });
+
+  document.getElementById('clearHistoryBtn').addEventListener('click', async () => {
+    if (!confirm('저장된 히스토리를 모두 삭제할까요?')) return;
+    try{
+      const listRes = await window.storage.list('snapshot:', false);
+      const keys = (listRes && listRes.keys) ? listRes.keys : [];
+      for (const k of keys){
+        try{ await window.storage.delete(k, false); }catch(e){ /* 무시 */ }
+      }
+      loadHistory();
+    }catch(e){
+      alert('삭제 중 오류가 발생했습니다.');
+    }
+  });
+
+  loadHistory();
+</script>
+</body>
+</html>
