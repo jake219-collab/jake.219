@@ -628,6 +628,10 @@
   }
 
   let prevPlacedTotal = num('knwPlacedSevere')*2 + num('knwPlacedMild') + num('knwExtraSevere')*2 + num('knwExtraMild');
+  // KnW 직군별 장애인 실인원 합계 추적 (변화분만큼 상시근로자 수 자동 조정)
+  let prevKnwDisabledHeadcount = num('knwRegularMild') + num('knwRegularSevere')
+    + num('knwContractMild') + num('knwContractSevere')
+    + num('knwSportsMild') + num('knwSportsSevere');
   let latestSnapshot = null;
 
   function fmt(n, digits=0){
@@ -638,9 +642,21 @@
     const knwBaseTotal = num('knwBaseTotal');
     const equityPct = num('equityPct');
     const llabOwn = num('llabOwn');
+
+    // KnW 장애인 실인원 합계가 바뀌면 상시근로자 수도 자동 반영
+    const knwMild = num('knwRegularMild') + num('knwContractMild') + num('knwSportsMild');
+    const knwSevere = num('knwRegularSevere') + num('knwContractSevere') + num('knwSportsSevere');
+    const knwDisabledHeadcount = knwMild + knwSevere;
+    const knwDelta = knwDisabledHeadcount - prevKnwDisabledHeadcount;
+    if (knwDelta !== 0){
+      document.getElementById('knwBaseTotal').value = knwBaseTotal + knwDelta;
+      prevKnwDisabledHeadcount = knwDisabledHeadcount;
+    }
+    const knwBaseTotalCurrent = num('knwBaseTotal');
+
     // 링키지랩 지분 귀속 인원 (고용율 분자에 더해지는 값, 분모에도 동일하게 반영)
     const equityAttributed = Math.floor(llabOwn * equityPct / 100);
-    const knwTotalEffective = knwBaseTotal + equityAttributed;
+    const knwTotalEffective = knwBaseTotalCurrent + equityAttributed;
     document.getElementById('knwTotalEffective').textContent = fmt(knwTotalEffective) + '명';
 
     // 링키지랩 실제 배치 인원(가중치 없는 실인원) = 상시근로자에 추가
@@ -649,8 +665,6 @@
     const knwExtraSevere = num('knwExtraSevere');
     const knwExtraMild = num('knwExtraMild');
     const llabHeadcount = (knwPlacedSevere + knwExtraSevere) + (knwPlacedMild + knwExtraMild);
-    const knwMild = num('knwRegularMild') + num('knwContractMild') + num('knwSportsMild');
-    const knwSevere = num('knwRegularSevere') + num('knwContractSevere') + num('knwSportsSevere');
     document.getElementById('knwMildTotal').textContent = fmt(knwMild);
     document.getElementById('knwSevereTotal').textContent = fmt(knwSevere);
     document.getElementById('knwHeadcountTotal').textContent = fmt(knwMild + knwSevere);
@@ -754,7 +768,7 @@
     document.getElementById('assignedCount').textContent = fmt(equityAttributed);
 
     latestSnapshot = {
-      knwTotal: knwBaseTotal, knwSevere, knwMild, equityPct,
+      knwTotal: knwBaseTotalCurrent, knwSevere, knwMild, equityPct,
       llabOwn: llabDisabled, knwRate, equityAttributed
     };
   }
