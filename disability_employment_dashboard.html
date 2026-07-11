@@ -484,8 +484,16 @@
       <div class="field-group group-knw">
         <h3>케이앤웍스(KnW)<span class="badge badge-knw">KnW 입력</span></h3>
         <label>
-          <span class="lbl">상시근로자 수</span>
-          <input type="number" id="knwTotal" value="772" min="0">
+          <span class="lbl">상시근로자 수 (링키지랩 근로자 포함)</span>
+          <div class="computed-line">
+            <span>KnW + 링키지랩 지분 귀속 인원 합산</span>
+            <span class="computed-val" id="knwTotalEffective">0</span>
+          </div>
+          <div class="hint">고용율 계산 분모로 사용됩니다.</div>
+        </label>
+        <label>
+          <span class="lbl">KnW 상시 근로자</span>
+          <input type="number" id="knwBaseTotal" value="772" min="0">
         </label>
 
         <div class="type-table">
@@ -495,7 +503,7 @@
           <div class="type-table-row">
             <span class="type-name">정규직</span>
             <input type="number" id="knwRegularMild" value="4" min="0">
-            <input type="number" id="knwRegularSevere" value="2" min="0">
+            <input type="number" id="knwRegularSevere" value="3" min="0">
           </div>
           <div class="type-table-row">
             <span class="type-name">계약직</span>
@@ -604,7 +612,7 @@
 </div>
 
 <script>
-  const ids = ['knwTotal','knwRegularMild','knwRegularSevere','knwContractMild','knwContractSevere','knwSportsMild','knwSportsSevere','equityPct','llabOwn','knwPlacedSevere','knwPlacedMild','knwExtraSevere','knwExtraMild'];
+  const ids = ['knwBaseTotal','knwRegularMild','knwRegularSevere','knwContractMild','knwContractSevere','knwSportsMild','knwSportsSevere','equityPct','llabOwn','knwPlacedSevere','knwPlacedMild','knwExtraSevere','knwExtraMild'];
   ids.forEach(id => document.getElementById(id).addEventListener('input', compute));
 
   const targets = [
@@ -626,17 +634,25 @@
   }
 
   function compute(){
-    const knwTotal = num('knwTotal');
+    const knwBaseTotal = num('knwBaseTotal');
+    const equityPct = num('equityPct');
+    const llabOwn = num('llabOwn');
+    // 링키지랩 지분 귀속 인원 (고용율 분자에 더해지는 값, 분모에도 동일하게 반영)
+    const equityAttributed = Math.floor(llabOwn * equityPct / 100);
+    const knwTotalEffective = knwBaseTotal + equityAttributed;
+    document.getElementById('knwTotalEffective').textContent = fmt(knwTotalEffective) + '명';
+
+    // 링키지랩 실제 배치 인원(가중치 없는 실인원) = 상시근로자에 추가
+    const knwPlacedSevere = num('knwPlacedSevere');
+    const knwPlacedMild = num('knwPlacedMild');
+    const knwExtraSevere = num('knwExtraSevere');
+    const knwExtraMild = num('knwExtraMild');
+    const llabHeadcount = (knwPlacedSevere + knwExtraSevere) + (knwPlacedMild + knwExtraMild);
     const knwMild = num('knwRegularMild') + num('knwContractMild') + num('knwSportsMild');
     const knwSevere = num('knwRegularSevere') + num('knwContractSevere') + num('knwSportsSevere');
     document.getElementById('knwMildTotal').textContent = fmt(knwMild);
     document.getElementById('knwSevereTotal').textContent = fmt(knwSevere);
     document.getElementById('knwHeadcountTotal').textContent = fmt(knwMild + knwSevere);
-    const equityPct = num('equityPct');
-    const knwPlacedSevere = num('knwPlacedSevere');
-    const knwPlacedMild = num('knwPlacedMild');
-    const knwExtraSevere = num('knwExtraSevere');
-    const knwExtraMild = num('knwExtraMild');
 
     document.getElementById('knwPlacedRowSum').textContent = fmt(knwPlacedSevere*2 + knwPlacedMild);
     document.getElementById('knwExtraRowSum').textContent = fmt(knwExtraSevere*2 + knwExtraMild);
@@ -648,24 +664,23 @@
     const placedDelta = placedTotal - prevPlacedTotal;
     if (placedDelta !== 0){
       const llabOwnInput = document.getElementById('llabOwn');
-      llabOwnInput.value = num('llabOwn') + placedDelta;
+      llabOwnInput.value = llabOwn + placedDelta;
       prevPlacedTotal = placedTotal;
     }
     const llabDisabled = num('llabOwn');
 
     const knwOwnWeighted = knwSevere*2 + knwMild;
-    const equityAttributed = Math.floor(llabDisabled * equityPct / 100);
     const knwWeighted = knwOwnWeighted + equityAttributed;
-    const knwRate = knwTotal > 0 ? (knwWeighted / knwTotal * 100) : 0;
+    const knwRate = knwTotalEffective > 0 ? (knwWeighted / knwTotalEffective * 100) : 0;
 
     document.getElementById('rateBig').textContent = fmt(knwRate,2) + '%';
     document.getElementById('rateFormula').textContent =
-      `(중증 ${fmt(knwSevere)}×2 + 경증 ${fmt(knwMild)} + 지분기여 ${fmt(equityAttributed)}) ÷ 상시근로자 ${fmt(knwTotal)}명`;
+      `(중증 ${fmt(knwSevere)}×2 + 경증 ${fmt(knwMild)} + 지분기여 ${fmt(equityAttributed)}) ÷ 실질상시근로자 ${fmt(knwTotalEffective)}명`;
 
     const currentTarget = targets[0].rate;
-    const currentGap = knwTotal * currentTarget / 100 - knwWeighted;
+    const currentGap = knwTotalEffective * currentTarget / 100 - knwWeighted;
     const tag = document.getElementById('rateTag');
-    if (knwTotal === 0){
+    if (knwTotalEffective === 0){
       tag.textContent = '입력 필요';
       tag.className = 'rate-tag tag-warn';
     } else if (Math.floor(currentGap) <= 0){
@@ -681,8 +696,8 @@
     stairsEl.innerHTML = '';
 
     const gaps = targets.map(t => {
-      const required = knwTotal * t.rate / 100;
-      const gap = required - knwWeighted; // 양수면 부족, 음수/0이 충족
+      const required = knwTotalEffective * t.rate / 100;
+      const gap = required - knwWeighted; // 양수면 부족, 음수/0이면 충족
       return {...t, required, gap};
     });
     const maxAbsGap = Math.max(1, ...gaps.map(g => Math.abs(g.gap)));
@@ -708,8 +723,8 @@
       if (g.gap > 0 && Math.floor(g.gap) > 0){
         const gapFloor = Math.floor(g.gap);
         gapNum.textContent = `부족 ${fmt(gapFloor)}`;
-        gapNum.style.color = g.gap / (knwTotal*g.rate/100 || 1) > 0.3 ? 'var(--rose)' : 'var(--amber)';
-        barClass = g.gap / (knwTotal*g.rate/100 || 1) > 0.3 ? 'bar-bad' : 'bar-warn';
+        gapNum.style.color = g.gap / (knwTotalEffective*g.rate/100 || 1) > 0.3 ? 'var(--rose)' : 'var(--amber)';
+        barClass = g.gap / (knwTotalEffective*g.rate/100 || 1) > 0.3 ? 'bar-bad' : 'bar-warn';
         heightPct = Math.max(10, (Math.abs(g.gap)/maxAbsGap)*100);
       } else {
         const surplusFloor = Math.floor(Math.abs(g.gap));
@@ -738,7 +753,7 @@
     document.getElementById('assignedCount').textContent = fmt(equityAttributed);
 
     latestSnapshot = {
-      knwTotal, knwSevere, knwMild, equityPct,
+      knwTotal: knwBaseTotal, knwSevere, knwMild, equityPct,
       llabOwn: llabDisabled, knwRate, equityAttributed
     };
   }
