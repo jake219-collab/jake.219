@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="에스유머티리얼스 AX 전환 전략 보고서">
+<title>AX 전환 전략 보고서 | 에스유머티리얼스</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --paper:#F2F4F5; --card:#FFFFFF; --ink:#14213A; --ink-soft:#4A5570; --ink-mute:#6E7891;
+  --line:#D8DDE2; --line-soft:#E9EDF0;
+  --honey:#B8790F; --honey-bg:#FBF2E0;
+  --teal:#0F6E56; --teal-bg:#E6F2ED;
+  --amber:#8A5A0B; --amber-bg:#FAF0DD;
+  --blue:#1B5D9B; --blue-bg:#E8F0F8;
+  --rust:#A33B22; --rust-bg:#FAEBE6;
+  --plum:#4A3A8C; --plum-bg:#EEEBF8;
+  --sans:"Pretendard","Pretendard Variable","맑은 고딕","Malgun Gothic",
+         "Apple SD Gothic Neo","Noto Sans KR","Nanum Gothic",
+         -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"D2Coding","Consolas","Menlo",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.72;-webkit-font-smoothing:antialiased;
+  word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 90px}
+
+/* ---------- 상단 네비 ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(242,244,245,.94);
+  backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1080px;margin:0 auto;padding:11px 20px;display:flex;
+  gap:8px;align-items:center;flex-wrap:wrap}
+.nav b{font-size:13px;font-weight:700;margin-right:8px;white-space:nowrap}
+.nav a{font-size:12.5px;color:var(--ink-soft);text-decoration:none;
+  padding:5px 11px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+.nav a:hover,.nav a:focus-visible{background:var(--card);border-color:var(--line);color:var(--ink)}
+
+/* ---------- 표지 ---------- */
+.cover{padding:60px 0 44px;border-bottom:2px solid var(--ink)}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.08em;
+  color:var(--honey);background:var(--honey-bg);padding:5px 12px;border-radius:4px}
+h1{font-size:clamp(27px,4.2vw,42px);font-weight:800;line-height:1.28;
+  letter-spacing:-.02em;margin:16px 0 0}
+.sub{font-size:clamp(14px,1.8vw,17px);color:var(--ink-soft);margin-top:14px;max-width:62ch}
+.docinfo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px;border-radius:6px;
+  overflow:hidden}
+.docinfo div{background:var(--card);padding:13px 16px}
+.docinfo dt{font-size:11px;color:var(--ink-mute);font-weight:600;letter-spacing:.04em}
+.docinfo dd{font-size:14px;font-weight:700;margin-top:3px}
+
+/* ---------- 섹션 ---------- */
+section{padding:52px 0 8px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.snum{font-size:12px;font-weight:700;color:var(--honey);letter-spacing:.1em}
+h2{font-size:clamp(21px,2.9vw,29px);font-weight:800;letter-spacing:-.015em;margin:8px 0 10px}
+h3{font-size:17px;font-weight:700;margin:34px 0 10px;padding-left:12px;
+  border-left:4px solid var(--ink)}
+h4{font-size:14.5px;font-weight:700;margin:20px 0 8px;color:var(--ink-soft)}
+p{margin:10px 0;color:var(--ink-soft)}
+p.lead{color:var(--ink);font-size:15.5px}
+strong{font-weight:700;color:var(--ink)}
+
+/* ---------- 표 ---------- */
+.tw{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13.5px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line-soft);
+  vertical-align:top;line-height:1.6}
+thead th{background:#EDF0F2;font-weight:700;font-size:12.5px;color:var(--ink);
+  border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.c,th.c{text-align:center;white-space:nowrap}
+.nowrap{white-space:nowrap}
+
+/* ---------- 배지 ---------- */
+.b{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;
+  border-radius:4px;white-space:nowrap}
+.b-teal{background:var(--teal-bg);color:var(--teal)}
+.b-amber{background:var(--amber-bg);color:var(--amber)}
+.b-blue{background:var(--blue-bg);color:var(--blue)}
+.b-rust{background:var(--rust-bg);color:var(--rust)}
+.b-plum{background:var(--plum-bg);color:var(--plum)}
+.b-gray{background:#E9EDF0;color:var(--ink-soft)}
+
+/* ---------- 카드 ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.card .k{font-size:11.5px;font-weight:700;color:var(--ink-mute);letter-spacing:.05em}
+.card .v{font-size:15px;font-weight:700;margin:6px 0 4px;line-height:1.45}
+.card p{font-size:13px;margin:0;line-height:1.6}
+.card.t-teal{border-top:3px solid var(--teal)}
+.card.t-amber{border-top:3px solid var(--amber)}
+.card.t-blue{border-top:3px solid var(--blue)}
+.card.t-rust{border-top:3px solid var(--rust)}
+
+/* ---------- 인용 ---------- */
+.quote{background:var(--ink);color:#fff;border-radius:8px;padding:24px 26px;margin:22px 0}
+.quote p{color:#fff;font-size:16.5px;font-weight:600;margin:0;line-height:1.6}
+.quote span{display:block;font-size:12.5px;color:#A9B4D2;margin-top:10px;font-weight:400}
+
+.note{background:var(--honey-bg);border:1px solid #EBD9AE;border-radius:8px;
+  padding:14px 18px;margin:16px 0;font-size:13.5px;color:#6B4708}
+.note b{color:#6B4708}
+
+/* ---------- 간트 ---------- */
+.gantt{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.gantt table{min-width:820px;font-size:12.5px}
+.gantt th.m{width:38px;text-align:center;font-size:11px;padding:9px 2px;color:var(--ink-mute)}
+.gantt td.m{padding:5px 2px;border-left:1px solid var(--line-soft)}
+.gantt td.task{width:250px;font-weight:600;font-size:13px}
+.gantt td.own{width:100px;font-size:12px;color:var(--ink-soft);white-space:nowrap}
+.bar{display:block;height:15px;border-radius:3px}
+.g1{background:var(--rust)} .g2{background:var(--teal)}
+.g3{background:var(--amber)} .g4{background:var(--blue)} .g5{background:var(--plum)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+
+/* ---------- 푸터 ---------- */
+footer{padding:32px 0 0;font-size:12.5px;color:var(--ink-mute);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+a:focus-visible,button:focus-visible{outline:2px solid var(--honey);outline-offset:2px}
+@media (max-width:700px){
+  body{font-size:14.5px}
+  h3{margin-top:26px}
+  .nav a{font-size:12px;padding:4px 9px}
+}
+@media print{
+  .nav{display:none}
+  body{background:#fff;font-size:10.5pt}
+  section{page-break-inside:auto;border-bottom:1px solid #ccc}
+  h2,h3{page-break-after:avoid}
+  .tw,.gantt,table{page-break-inside:auto}
+  tr{page-break-inside:avoid}
+  @page{size:A4;margin:15mm}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="목차">
+  <div class="nav-in">
+    <b>AX 전환 전략 보고서</b>
+    <a href="#s1">1. 개요</a>
+    <a href="#s2">2. 문제점</a>
+    <a href="#s3">3. 전략과제</a>
+    <a href="#s4">4. 실행계획</a>
+    <a href="#s5">5. 건의사항</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="cover">
+  <span class="tag">사내 보고용 · 전략기획</span>
+  <h1>에스유머티리얼스 AX 전환 전략 보고서</h1>
+  <p class="sub">3년 내 주요 업무를 AX 기반으로 전환하여 인당 생산성을 실질적으로 향상시키기 위한 진단, 전략과제 도출 및 1년차 실행계획</p>
+  <dl class="docinfo">
+    <div><dt>보고 구분</dt><dd>전략기획 보고</dd></div>
+    <div><dt>대상 범위</dt><dd>전사 (제조·품질·경영지원)</dd></div>
+    <div><dt>계획 기간</dt><dd>3개년 (1년차 상세)</dd></div>
+    <div><dt>분석 방법</dt><dd>SWOT · TOWS · WBS</dd></div>
+  </dl>
+</header>
+
+<!-- ============ 1. 개요 ============ -->
+<section id="s1">
+  <p class="snum">SECTION 01</p>
+  <h2>개요</h2>
+
+  <h3>1.1 추진 배경</h3>
+  <p class="lead">당사는 플렉시블 OLED 하부 기판용 PI 바니시를 생산·개발·판매하는 소재 기업으로, 총 25명 규모의 조직이 제조·품질관리·경영지원 기능을 수행하고 있습니다. 향후 3년 내 주요 업무를 AX(AI Transformation) 기반으로 전환하여 인당 생산성을 실질적으로 향상시켜야 하나, 이를 체계적으로 추진할 <strong>전담 조직·예산·로드맵이 부재한 상태</strong>입니다.</p>
+  <p>특히 고객사가 AI Factory 및 제조 AI를 빠르게 도입하고 있는 상황에서, 공급사의 데이터 대응 수준이 향후 물량 배정 및 신규 그레이드 개발 참여의 실질적 평가 요소로 작용할 가능성이 높습니다. 본 보고서는 이러한 환경 변화에 대응하기 위한 전략 방향과 1년차 실행계획을 제시합니다.</p>
+
+  <h3>1.2 분석 범위 및 방법</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:130px">구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>분석 대상</strong></td><td>사업·시장 / 제품·기술 / 조직·인력 / 프로세스·업무 / 데이터·시스템 / AX 실행역량·거버넌스 등 6개 MECE 영역</td></tr>
+      <tr><td><strong>분석 도구</strong></td><td>SWOT 진단 → TOWS 교차전략 → 개선속도·지연비용 기반 우선순위 도출 → WBS 실행계획</td></tr>
+      <tr><td><strong>참조 기준</strong></td><td>동종 소재기업(UBE, MGC, Toray, Kaneka, Unitika)의 AX 추진 사례를 벤치마크로 활용</td></tr>
+      <tr><td><strong>계획 기간</strong></td><td>3개년 로드맵 수립, 1년차는 월 단위 WBS로 상세화</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>1.3 핵심 결론 요약</h3>
+  <div class="cards">
+    <div class="card t-rust">
+      <div class="k">결론 1</div>
+      <div class="v">전장을 4개 영역으로 좁힌다</div>
+      <p>6개 영역 중 사업·시장과 제품·기술의 약점은 지배구조에서 이미 결정된 구조적 상수입니다. AX 로드맵에서 명시적으로 제외하고 조직·프로세스·데이터·거버넌스 4개 영역에 집중합니다.</p>
+    </div>
+    <div class="card t-teal">
+      <div class="k">결론 2</div>
+      <div class="v">AX를 납품자격 유지비용으로 규정한다</div>
+      <p>혁신 투자로 접근하면 소규모 조직에서 예산 논리가 성립하지 않습니다. 고객사 요구 수준에 대응하기 위한 필수 비용으로 정의할 때 승인 가능성이 높아집니다.</p>
+    </div>
+    <div class="card t-amber">
+      <div class="k">결론 3</div>
+      <div class="v">순서가 성패를 가른다</div>
+      <p>거버넌스는 예산 없이 가장 빨리 개선되고, 데이터는 미룰수록 손실이 복리로 누적됩니다. 이 두 가지가 1년차 착수 순서를 결정합니다.</p>
+    </div>
+    <div class="card t-blue">
+      <div class="k">결론 4</div>
+      <div class="v">1년차 과제는 5건으로 제한한다</div>
+      <p>25명 조직에서 동시 추진 가능한 범위를 초과하면 전부 지연됩니다. 어느 시나리오에서도 후회하지 않는 No-Regret 과제만 남겼습니다.</p>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>AX의 목표는 물량 성장이나 신규 고객 확보가 아니라, 두 모회사에게 이 법인을 유지할 이유를 계속 제공하는 것입니다.</p>
+    <span>본 전략의 목표 정의 — 이에 따라 KPI를 매출·물량이 아닌 품질 대응력·산포·개발속도 3축으로 설정합니다.</span>
+  </div>
+</section>
+
+<!-- ============ 2. 문제점 ============ -->
+<section id="s2">
+  <p class="snum">SECTION 02</p>
+  <h2>현황 진단 및 문제점</h2>
+
+  <h3>2.1 SWOT 진단 요약</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:80px" class="c">구분</th><th>강점 (Strength)</th><th>약점 (Weakness)</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>사업<br>시장</strong></td>
+        <td>고객사向 PI 바니시 독점 공급, 안정적 Captive Market 확보</td>
+        <td>매출처 의존도 100%, 시장·고객 다변화에 구조적 제약</td></tr>
+      <tr><td class="c"><strong>제품<br>기술</strong></td>
+        <td>고내열 PI 기술 및 고객 공정 최적화 Know-how 장기 축적</td>
+        <td>단일 제품 중심, 특정 공정 최적화로 범용성 낮음</td></tr>
+      <tr><td class="c"><strong>조직<br>인력</strong></td>
+        <td>25명 소규모 조직으로 의사결정·실행 속도 빠름</td>
+        <td>AX·IT 전문인력 부재, 데이터·IT 업무 전량 외주</td></tr>
+      <tr><td class="c"><strong>프로세스</strong></td>
+        <td>비핵심 업무 아웃소싱 완료, 업무 도메인 명확</td>
+        <td>현안분석·품의·결산 등 문서 업무가 개인 경험과 Excel에 의존</td></tr>
+      <tr><td class="c"><strong>데이터<br>시스템</strong></td>
+        <td>SAP N-ERP, MES 등 그룹 표준 시스템 보유</td>
+        <td>데이터는 존재하나 의사결정은 담당자 가공자료 기반, 시스템 간 자동 연계 미흡</td></tr>
+      <tr><td class="c"><strong>거버넌스</strong></td>
+        <td>소규모 조직으로 변화관리 용이, 모회사 IT 인프라 활용 가능</td>
+        <td>AX 전담조직·예산·로드맵·KPI 전부 부재, 성공사례 없음</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:80px" class="c">구분</th><th>기회 (Opportunity)</th><th>위협 (Threat)</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>고객</strong></td>
+        <td>고객사의 AX 확산이 공급사 AX 추진의 명분과 예산 논리를 제공</td>
+        <td>고객사 대비 AX 수준 격차 발생 시 대응 역량 열위</td></tr>
+      <tr><td class="c"><strong>시장</strong></td>
+        <td>품질·추적성 요구 강화 → 대응 가능한 소수 공급사의 차별화 지점</td>
+        <td>고객사의 기술 노선 전환 및 경쟁 패널사 점유율 변동이 물량으로 전이</td></tr>
+      <tr><td class="c"><strong>기술</strong></td>
+        <td>소재정보학(MI)·실험설계 AI 성숙으로 개발 리드타임 단축 가능</td>
+        <td>경쟁 소재사의 AX 선행으로 차기 그레이드 배정 평가 시 열위</td></tr>
+      <tr><td class="c"><strong>정책<br>규제</strong></td>
+        <td>정부 R&amp;D·AX 지원 정책 확대로 예산 보완 가능</td>
+        <td>환경규제 강화 및 생성형 AI 활용에 따른 기술·영업기밀 유출 위험</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>2.2 핵심 문제점 5가지</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:56px">No</th><th style="width:190px">문제점</th><th>현상 및 영향</th><th class="c" style="width:96px">시급도</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>P1</strong></td>
+        <td><strong>추진 주체 부재</strong></td>
+        <td>AX를 책임지고 결정할 담당자와 협의체가 없어 논의가 진행되지 않음. 이 문제가 해소되지 않으면 나머지 과제의 착수 자체가 불가능</td>
+        <td class="c"><span class="b b-rust">최우선</span></td></tr>
+      <tr><td class="c"><strong>P2</strong></td>
+        <td><strong>데이터 축적 미개시</strong></td>
+        <td>배치 공정 데이터는 시간에 비례해서만 축적되므로, 저장을 시작하지 않으면 3년차 활용 가능성 자체가 사라짐. 지연 비용이 복리로 누적되는 유일한 영역</td>
+        <td class="c"><span class="b b-rust">최우선</span></td></tr>
+      <tr><td class="c"><strong>P3</strong></td>
+        <td><strong>보안 기준 미확정</strong></td>
+        <td>생성형 AI 활용 범위와 데이터 반출 기준이 없어, 현업이 자체적으로 AI를 사용할 경우 배합·공정조건 등 핵심 IP 유출 위험 상존</td>
+        <td class="c"><span class="b b-rust">최우선</span></td></tr>
+      <tr><td class="c"><strong>P4</strong></td>
+        <td><strong>전문 인력 부재</strong></td>
+        <td>데이터·IT 업무 전량 외주로, 무엇을 구축하더라도 유지·운영 주체가 없어 1~2년 내 방치될 가능성. 채용 6개월 + 육성 1년 이상 소요</td>
+        <td class="c"><span class="b b-amber">높음</span></td></tr>
+      <tr><td class="c"><strong>P5</strong></td>
+        <td><strong>성공 경험 부재</strong></td>
+        <td>AX 적용 사례가 없어 "적용할 곳이 많지 않다"는 인식이 형성되어 있으며, 이는 예산 확보와 현업 참여의 실질적 장벽으로 작용</td>
+        <td class="c"><span class="b b-amber">높음</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>2.3 통제 가능 영역과 구조적 상수의 구분</h3>
+  <p>모든 문제를 AX로 해결할 수는 없습니다. 로드맵에 통제 불가능한 항목을 포함시키면 달성 불가능한 KPI가 되어 추진 동력을 잃게 되므로, 다음과 같이 명확히 구분하여 관리합니다.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:170px">영역</th><th class="c" style="width:120px">AX 통제 가능성</th><th>처리 방향</th></tr></thead>
+    <tbody>
+      <tr><td>매출처 의존도 100%</td><td class="c"><span class="b b-gray">불가</span></td><td>지배구조 의제로 별도 상신, AX 로드맵에서 제외</td></tr>
+      <tr><td>제품 포트폴리오 단일성</td><td class="c"><span class="b b-gray">불가</span></td><td>지배구조 의제로 별도 상신, AX 로드맵에서 제외</td></tr>
+      <tr><td>고객사 기술 노선 변화</td><td class="c"><span class="b b-gray">불가</span></td><td>분기 단위 모니터링 지표로만 관리</td></tr>
+      <tr><td>공급자 교섭력</td><td class="c"><span class="b b-gray">불가</span></td><td>분기 단위 모니터링 지표로만 관리</td></tr>
+      <tr><td><strong>품질·데이터 요구 대응력</strong></td><td class="c"><span class="b b-teal">가능</span></td><td>1년차 핵심 과제로 설정</td></tr>
+      <tr><td><strong>수율 및 배치 산포</strong></td><td class="c"><span class="b b-teal">가능</span></td><td>2~3년차 목표, 1년차에 데이터 기반 마련</td></tr>
+      <tr><td><strong>개발 대응 속도</strong></td><td class="c"><span class="b b-teal">가능</span></td><td>2~3년차 목표, 1년차에 지식자산화 착수</td></tr>
+      <tr><td><strong>지식 자산화 수준</strong></td><td class="c"><span class="b b-teal">가능</span></td><td>1년차 파일럿 착수</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <b>관리 원칙</b> — 통제 불가 항목은 "대응하지 않는다"가 아니라 "AX 과제로 다루지 않고 분기 모니터링 지표로 관리한다"는 의미입니다. 별도 관리 체계는 4.5절에 정리했습니다.
+  </div>
+</section>
+
+<!-- ============ 3. 전략과제 ============ -->
+<section id="s3">
+  <p class="snum">SECTION 03</p>
+  <h2>전략과제 도출</h2>
+
+  <h3>3.1 TOWS 교차전략</h3>
+  <p>SWOT 진단 결과를 강점·약점과 기회·위협의 조합으로 교차시켜 네 가지 실행 방향을 도출했습니다.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:72px">구분</th><th style="width:150px">전략 방향</th><th>핵심 내용</th><th class="c" style="width:110px">착수 시점</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><span class="b b-rust">WT</span></td>
+        <td><strong>최소 방어선</strong><br><span style="font-size:12px;color:var(--ink-mute)">약점 × 위협</span></td>
+        <td>AI 사용정책 및 데이터 반출 기준 확정과 사내 AX 책임자 지정. 예산 없이 실행 가능하며, 다른 모든 과제의 선행 게이트 역할</td>
+        <td class="c">즉시</td></tr>
+      <tr><td class="c"><span class="b b-teal">SO</span></td>
+        <td><strong>명분 레버리지</strong><br><span style="font-size:12px;color:var(--ink-mute)">강점 × 기회</span></td>
+        <td>AX를 납품자격 유지비용으로 규정하여 예산 논리 확보. 기존 ERP·MES 위에 분석 계층만 적용해 신규 인프라 투자 최소화</td>
+        <td class="c">1년차 상반기</td></tr>
+      <tr><td class="c"><span class="b b-amber">WO</span></td>
+        <td><strong>역량 조달</strong><br><span style="font-size:12px;color:var(--ink-mute)">약점 × 기회</span></td>
+        <td>자체 채용을 기다리지 않고 모회사 IT 지원, 외주 계약 조건화, 정부 지원과제를 통해 부족한 역량과 재원을 조달</td>
+        <td class="c">1년차 하반기</td></tr>
+      <tr><td class="c"><span class="b b-blue">ST</span></td>
+        <td><strong>자격 방어</strong><br><span style="font-size:12px;color:var(--ink-mute)">강점 × 위협</span></td>
+        <td>축적된 Know-how를 지식자산으로 전환하여 차기 그레이드 배정 평가에 대비. 소조직의 실행 속도를 경쟁 우위로 활용</td>
+        <td class="c">즉시 착수<br>3년차 결실</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>3.2 우선순위 판단 기준</h3>
+  <p>약점 영역을 <strong>개선 소요기간</strong>과 <strong>지연 비용</strong> 두 축으로 평가한 결과가 착수 순서를 결정합니다.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:140px">영역</th><th class="c" style="width:130px">개선 소요기간</th><th class="c" style="width:120px">지연 비용</th><th>판단</th></tr></thead>
+    <tbody>
+      <tr><td><strong>거버넌스</strong></td><td class="c">최단 (즉시)</td><td class="c">전면 정지</td>
+        <td>예산이 아닌 결정의 문제. 해소되지 않으면 나머지 전부 착수 불가 → <strong>0순위</strong></td></tr>
+      <tr><td><strong>데이터</strong></td><td class="c">중간 (6개월)</td><td class="c">복리 누적</td>
+        <td>축적에 절대 시간이 필요하며 미룰수록 손실 확대 → <strong>1순위, 승인 대기 없이 병행</strong></td></tr>
+      <tr><td><strong>프로세스</strong></td><td class="c">짧음 (3개월)</td><td class="c">낮음</td>
+        <td>성과가 가시적이므로 조직 관심 형성용 <strong>Quick Win</strong>으로 활용</td></tr>
+      <tr><td><strong>인력·역량</strong></td><td class="c">최장 (1.5년+)</td><td class="c">높음</td>
+        <td>완성은 늦으나 착수는 즉시. 자체 확보 대신 외부 조달로 우회</td></tr>
+      <tr><td><strong>사업·제품</strong></td><td class="c">—</td><td class="c">—</td>
+        <td>지배구조 영역으로 AX 로드맵에서 제외</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>3.3 전략과제 정의</h3>
+  <p>위 판단에 따라 1년차에 추진할 전략과제 7건을 정의했습니다. 담당은 25명 조직 규모를 고려하여 전담 신설이 아닌 <strong>기존 인력의 겸임 지정</strong>을 전제로 합니다.</p>
+  <div class="tw">
+  <table>
+    <thead><tr>
+      <th class="c" style="width:56px">과제</th><th style="width:180px">과제명</th>
+      <th>목표 및 산출물</th><th class="c" style="width:110px">주관</th><th class="c" style="width:78px">우선순위</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>T1</strong></td><td><strong>AX 추진체계 확립</strong></td>
+        <td>사내 AX 책임자 지정 및 R&amp;R 문서화, 월 1회 AX 협의체 운영 규정 수립<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 지정 공문, 협의체 운영규정</span></td>
+        <td class="c">경영지원</td><td class="c"><span class="b b-rust">0</span></td></tr>
+      <tr><td class="c"><strong>T2</strong></td><td><strong>AI 거버넌스·보안 기준 수립</strong></td>
+        <td>AI 사용정책 및 데이터 반출 기준 확정, 승인 절차와 Human-in-the-loop 원칙 정의<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: AI 사용정책 1부, 데이터 등급 분류표</span></td>
+        <td class="c">경영지원<br>품질관리</td><td class="c"><span class="b b-rust">0</span></td></tr>
+      <tr><td class="c"><strong>T3</strong></td><td><strong>공정 데이터 축적 개시</strong></td>
+        <td>배치번호 체계 단일화, 공정 태그 표준 정의 및 상시 저장 개시, 실패·폐기 배치 보존 규칙 수립<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 태그 표준 정의서, 배치번호 체계도</span></td>
+        <td class="c">제조<br>생산기술</td><td class="c"><span class="b b-rust">1</span></td></tr>
+      <tr><td class="c"><strong>T4</strong></td><td><strong>품질·출하 추적체계 구축</strong></td>
+        <td>원료부터 출하까지 배치 단위 추적성 확보, 성적서 발행 항목 표준화 및 자동화 기반 마련<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 추적체계 설계서, 표준 항목 정의서</span></td>
+        <td class="c">품질관리</td><td class="c"><span class="b b-amber">1</span></td></tr>
+      <tr><td class="c"><strong>T5</strong></td><td><strong>사무업무 Quick Win</strong></td>
+        <td>반복 자료취합·보고 업무 진단 후 1건 선정하여 자동화 시범 적용, 효과 측정 및 사내 공유<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 업무 진단표, 효과 측정 보고서</span></td>
+        <td class="c">경영지원</td><td class="c"><span class="b b-teal">2</span></td></tr>
+      <tr><td class="c"><strong>T6</strong></td><td><strong>암묵지 지식자산화</strong></td>
+        <td>핵심 기술·공정 노하우 문서화 파일럿, 사내 기술문서 검색 체계 설계<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 지식자산화 대상 목록, 파일럿 결과서</span></td>
+        <td class="c">생산기술<br>품질관리</td><td class="c"><span class="b b-blue">2</span></td></tr>
+      <tr><td class="c"><strong>T7</strong></td><td><strong>역량·재원 조달</strong></td>
+        <td>외주 계약에 재학습·유지보수 조건 반영, 모회사 IT 지원 협의, 정부 지원과제 적격성 검토 및 신청<br><span style="color:var(--ink-mute);font-size:12.5px">산출물: 계약 개정안, 과제 신청서</span></td>
+        <td class="c">경영지원</td><td class="c"><span class="b b-amber">2</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>3.4 3개년 단계 구상</h3>
+  <div class="cards">
+    <div class="card t-rust">
+      <div class="k">1년차 · 기반 구축</div>
+      <div class="v">데이터를 쌓기 시작한다</div>
+      <p>추진체계 확립, 보안 기준 확정, 공정 데이터 축적 개시, 추적체계 구축. 모델 구축은 하지 않고 <strong>표준화와 저장</strong>에 집중합니다.</p>
+    </div>
+    <div class="card t-amber">
+      <div class="k">2년차 · 적용 확대</div>
+      <div class="v">쌓인 데이터로 예측한다</div>
+      <p>축적 데이터를 기반으로 품질 이상예측 및 공정 소프트센서 검토, 사무업무 자동화 확산, 사내 기술문서 검색 체계 운영.</p>
+    </div>
+    <div class="card t-blue">
+      <div class="k">3년차 · 고도화</div>
+      <div class="v">개발 속도로 연결한다</div>
+      <p>소재정보학 및 실험설계 최적화 적용 검토, 생산조건 최적화, 인당 생산성 지표의 실질적 개선 확인.</p>
+    </div>
+  </div>
+  <div class="note">
+    <b>단계 설계의 전제</b> — 배치 공정 데이터는 시간에 비례해서만 축적됩니다. 2~3년차 과제의 실현 가능성은 전적으로 1년차에 저장을 시작했는지 여부에 달려 있으므로, 1년차 T3은 성과가 눈에 보이지 않더라도 지연시켜서는 안 되는 과제입니다.
+  </div>
+</section>
+
+<!-- ============ 4. 실행계획 ============ -->
+<section id="s4">
+  <p class="snum">SECTION 04</p>
+  <h2>1년차 실행계획 (WBS)</h2>
+
+  <h3>4.1 WBS 상세</h3>
+  <div class="tw">
+  <table>
+    <thead><tr>
+      <th class="c" style="width:64px">WBS</th><th style="width:210px">작업 항목</th>
+      <th style="width:190px">주요 산출물</th><th class="c" style="width:96px">담당</th>
+      <th class="c" style="width:88px">기간</th><th class="c" style="width:78px">선행</th>
+    </tr></thead>
+    <tbody>
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 0. 착수 및 거버넌스 확립</td></tr>
+      <tr><td class="c">1.1</td><td>AX 추진 책임자 지정 및 R&amp;R 확정</td><td>지정 공문, 역할기술서</td><td class="c">경영지원</td><td class="c">M1</td><td class="c">—</td></tr>
+      <tr><td class="c">1.2</td><td>AI 사용정책 및 데이터 반출 기준 수립</td><td>AI 사용정책, 데이터 등급표</td><td class="c">경영지원</td><td class="c">M1–M2</td><td class="c">1.1</td></tr>
+      <tr><td class="c">1.3</td><td>AX 협의체 구성 및 운영 규정 제정</td><td>협의체 운영규정</td><td class="c">경영지원</td><td class="c">M2</td><td class="c">1.1</td></tr>
+      <tr><td class="c">1.4</td><td>현업 Key User 지정 (부서별 1인)</td><td>Key User 명단</td><td class="c">각 부서</td><td class="c">M2</td><td class="c">1.3</td></tr>
+
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 1. 데이터 기반 마련</td></tr>
+      <tr><td class="c">2.1</td><td>배치번호 체계 단일화</td><td>배치번호 체계도</td><td class="c">제조</td><td class="c">M2–M3</td><td class="c">1.1</td></tr>
+      <tr><td class="c">2.2</td><td>공정 태그 표준 정의</td><td>태그 표준 정의서</td><td class="c">생산기술</td><td class="c">M3–M5</td><td class="c">2.1</td></tr>
+      <tr><td class="c">2.3</td><td>공정 데이터 상시 저장 개시</td><td>저장 체계 구성도</td><td class="c">생산기술</td><td class="c">M5–M12</td><td class="c">2.2</td></tr>
+      <tr><td class="c">2.4</td><td>조건변경 이력 및 실패·폐기 배치 보존 규칙 수립</td><td>데이터 보존 규칙서</td><td class="c">제조·품질</td><td class="c">M4–M5</td><td class="c">2.1</td></tr>
+
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 2. 품질·출하 추적체계</td></tr>
+      <tr><td class="c">3.1</td><td>현행 품질·출하 데이터 흐름 진단</td><td>As-Is 진단서</td><td class="c">품질관리</td><td class="c">M4–M5</td><td class="c">1.1</td></tr>
+      <tr><td class="c">3.2</td><td>성적서 발행 항목 표준화</td><td>표준 항목 정의서</td><td class="c">품질관리</td><td class="c">M6–M7</td><td class="c">3.1</td></tr>
+      <tr><td class="c">3.3</td><td>배치 단위 추적체계 설계</td><td>추적체계 설계서</td><td class="c">품질·생산기술</td><td class="c">M7–M9</td><td class="c">2.2, 3.2</td></tr>
+      <tr><td class="c">3.4</td><td>추적체계 시범 운영 및 보완</td><td>시범 운영 결과서</td><td class="c">품질관리</td><td class="c">M10–M12</td><td class="c">3.3</td></tr>
+
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 3. Quick Win 및 확산</td></tr>
+      <tr><td class="c">4.1</td><td>반복 문서·분석 업무 진단 및 과제 선정</td><td>업무 진단표</td><td class="c">경영지원</td><td class="c">M2–M3</td><td class="c">1.2</td></tr>
+      <tr><td class="c">4.2</td><td>Quick Win 시범 적용</td><td>시범 적용 결과</td><td class="c">경영지원</td><td class="c">M4–M6</td><td class="c">4.1</td></tr>
+      <tr><td class="c">4.3</td><td>효과 측정 및 사내 공유</td><td>효과 측정 보고서</td><td class="c">경영지원</td><td class="c">M7</td><td class="c">4.2</td></tr>
+      <tr><td class="c">4.4</td><td>전사 확산 및 사용자 교육</td><td>교육 자료, 이수 현황</td><td class="c">경영지원</td><td class="c">M8–M10</td><td class="c">4.3</td></tr>
+
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 4. 역량·재원 조달</td></tr>
+      <tr><td class="c">5.1</td><td>외주 계약 조건 재정비 (재학습·유지보수 명시)</td><td>계약 개정안</td><td class="c">경영지원</td><td class="c">M3–M4</td><td class="c">1.1</td></tr>
+      <tr><td class="c">5.2</td><td>모회사 IT 인프라·지원 협의</td><td>협의 결과서</td><td class="c">경영지원</td><td class="c">M4–M6</td><td class="c">1.2</td></tr>
+      <tr><td class="c">5.3</td><td>정부 지원과제 적격성 검토 및 신청</td><td>적격성 검토서, 신청서</td><td class="c">경영지원</td><td class="c">M5–M8</td><td class="c">1.1</td></tr>
+      <tr><td class="c">5.4</td><td>Key User 역량 레벨 체계 도입</td><td>역량 체계표</td><td class="c">경영지원</td><td class="c">M9–M11</td><td class="c">1.4</td></tr>
+
+      <tr><td colspan="6" style="background:#F6F8F9;font-weight:700;font-size:13px">Phase 5. 지식자산화 및 차년도 준비</td></tr>
+      <tr><td class="c">6.1</td><td>지식자산화 대상 선정 (핵심 노하우 목록화)</td><td>대상 목록</td><td class="c">생산기술</td><td class="c">M6–M7</td><td class="c">1.2</td></tr>
+      <tr><td class="c">6.2</td><td>기술문서 구조화 파일럿</td><td>파일럿 결과서</td><td class="c">생산기술·품질</td><td class="c">M8–M11</td><td class="c">6.1</td></tr>
+      <tr><td class="c">6.3</td><td>1년차 성과 평가 및 2년차 로드맵 수립</td><td>성과 평가서, 2년차 계획</td><td class="c">AX 협의체</td><td class="c">M11–M12</td><td class="c">전체</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>4.2 일정 계획 (Gantt)</h3>
+  <div class="gantt">
+  <table>
+    <thead><tr>
+      <th style="width:250px">작업 항목</th><th style="width:100px">담당</th>
+      <th class="m">M1</th><th class="m">M2</th><th class="m">M3</th><th class="m">M4</th>
+      <th class="m">M5</th><th class="m">M6</th><th class="m">M7</th><th class="m">M8</th>
+      <th class="m">M9</th><th class="m">M10</th><th class="m">M11</th><th class="m">M12</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="task">1. 거버넌스 확립</td><td class="own">경영지원</td>
+        <td class="m"><span class="bar g1"></span></td><td class="m"><span class="bar g1"></span></td>
+        <td class="m"></td><td class="m"></td><td class="m"></td><td class="m"></td>
+        <td class="m"></td><td class="m"></td><td class="m"></td><td class="m"></td>
+        <td class="m"></td><td class="m"></td></tr>
+      <tr><td class="task">2. 데이터 기반 마련</td><td class="own">제조·생산기술</td>
+        <td class="m"></td><td class="m"><span class="bar g2"></span></td>
+        <td class="m"><span class="bar g2"></span></td><td class="m"><span class="bar g2"></span></td>
+        <td class="m"><span class="bar g2"></span></td><td class="m"><span class="bar g2"></span></td>
+        <td class="m"><span class="bar g2"></span></td><td class="m"><span class="bar g2"></span></td>
+        <td class="m"><span class="bar g2"></span></td><td class="m"><span class="bar g2"></span></td>
+        <td class="m"><span class="bar g2"></span></td><td class="m"><span class="bar g2"></span></td></tr>
+      <tr><td class="task">3. 품질·출하 추적체계</td><td class="own">품질관리</td>
+        <td class="m"></td><td class="m"></td><td class="m"></td>
+        <td class="m"><span class="bar g3"></span></td><td class="m"><span class="bar g3"></span></td>
+        <td class="m"><span class="bar g3"></span></td><td class="m"><span class="bar g3"></span></td>
+        <td class="m"><span class="bar g3"></span></td><td class="m"><span class="bar g3"></span></td>
+        <td class="m"><span class="bar g3"></span></td><td class="m"><span class="bar g3"></span></td>
+        <td class="m"><span class="bar g3"></span></td></tr>
+      <tr><td class="task">4. Quick Win 및 확산</td><td class="own">경영지원</td>
+        <td class="m"></td><td class="m"><span class="bar g4"></span></td>
+        <td class="m"><span class="bar g4"></span></td><td class="m"><span class="bar g4"></span></td>
+        <td class="m"><span class="bar g4"></span></td><td class="m"><span class="bar g4"></span></td>
+        <td class="m"><span class="bar g4"></span></td><td class="m"><span class="bar g4"></span></td>
+        <td class="m"><span class="bar g4"></span></td><td class="m"><span class="bar g4"></span></td>
+        <td class="m"></td><td class="m"></td></tr>
+      <tr><td class="task">5. 역량·재원 조달</td><td class="own">경영지원</td>
+        <td class="m"></td><td class="m"></td><td class="m"><span class="bar g5"></span></td>
+        <td class="m"><span class="bar g5"></span></td><td class="m"><span class="bar g5"></span></td>
+        <td class="m"><span class="bar g5"></span></td><td class="m"><span class="bar g5"></span></td>
+        <td class="m"><span class="bar g5"></span></td><td class="m"><span class="bar g5"></span></td>
+        <td class="m"><span class="bar g5"></span></td><td class="m"><span class="bar g5"></span></td>
+        <td class="m"></td></tr>
+      <tr><td class="task">6. 지식자산화·차년도 준비</td><td class="own">생산기술·품질</td>
+        <td class="m"></td><td class="m"></td><td class="m"></td><td class="m"></td>
+        <td class="m"></td><td class="m"><span class="bar g1"></span></td>
+        <td class="m"><span class="bar g1"></span></td><td class="m"><span class="bar g1"></span></td>
+        <td class="m"><span class="bar g1"></span></td><td class="m"><span class="bar g1"></span></td>
+        <td class="m"><span class="bar g1"></span></td><td class="m"><span class="bar g1"></span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <span><i class="sw g1"></i>거버넌스 · 지식자산화</span>
+    <span><i class="sw g2"></i>데이터 기반</span>
+    <span><i class="sw g3"></i>품질·추적</span>
+    <span><i class="sw g4"></i>Quick Win</span>
+    <span><i class="sw g5"></i>역량·재원</span>
+  </div>
+
+  <h3>4.3 주요 마일스톤</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:78px">시점</th><th style="width:220px">마일스톤</th><th>확인 기준</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>M2</strong></td><td>추진체계 및 보안 기준 확정</td><td>AX 책임자 지정 공문 발행, AI 사용정책 승인 완료</td></tr>
+      <tr><td class="c"><strong>M5</strong></td><td>공정 데이터 저장 개시</td><td>배치번호 단일화 완료, 표준 태그 기준 데이터 축적 시작</td></tr>
+      <tr><td class="c"><strong>M7</strong></td><td>Quick Win 효과 확인</td><td>시범 과제 효과 측정 보고서 사내 공유 완료</td></tr>
+      <tr><td class="c"><strong>M9</strong></td><td>추적체계 설계 완료</td><td>배치 단위 추적 설계서 승인, 시범 운영 착수</td></tr>
+      <tr><td class="c"><strong>M12</strong></td><td>1년차 종료 및 차년도 계획 확정</td><td>성과 평가서 보고, 2년차 로드맵 및 KPI 승인</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>4.4 성과 관리 (KPI)</h3>
+  <p>KPI는 AI 사용률과 같은 활동 지표가 아니라 <strong>업무 성과 지표</strong>로 설정합니다. 1년차는 기반 구축 단계이므로 선행지표 중심으로 관리하고, 결과지표는 2년차부터 적용합니다.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:86px">구분</th><th style="width:190px">지표</th><th>측정 방법</th><th class="c" style="width:110px">1년차 목표</th></tr></thead>
+    <tbody>
+      <tr><td class="c" rowspan="3"><span class="b b-teal">선행<br>지표</span></td>
+        <td>공정 데이터 축적 개시율</td><td>표준 태그 기준 상시 저장 중인 공정 비율</td><td class="c">착수 및 지속</td></tr>
+      <tr><td>배치 추적 가능 비율</td><td>원료–공정–출하 연결이 확인되는 배치 비율</td><td class="c">체계 설계 완료</td></tr>
+      <tr><td>Key User 지정 및 활동</td><td>부서별 Key User 지정 및 협의체 참석률</td><td class="c">전 부서 지정</td></tr>
+      <tr><td class="c" rowspan="3"><span class="b b-blue">결과<br>지표</span></td>
+        <td>품질 데이터 대응 수준</td><td>고객 요구 항목 대비 자동 제공 가능 항목 비율</td><td class="c">기준선 측정</td></tr>
+      <tr><td>배치 산포 및 수율</td><td>주요 물성 항목의 배치 간 편차, 재작업률</td><td class="c">기준선 측정</td></tr>
+      <tr><td>개발 대응 속도</td><td>신규 그레이드 요청부터 시제품 제출까지 소요일</td><td class="c">기준선 측정</td></tr>
+      <tr><td class="c"><span class="b b-amber">보조</span></td>
+        <td>사무업무 절감 시간</td><td>Quick Win 적용 업무의 적용 전후 소요시간 비교</td><td class="c">효과 측정</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <b>1년차 목표를 "기준선 측정"으로 설정한 이유</b> — 현재 측정 체계가 없는 상태에서 수치 목표를 먼저 설정하면 근거 없는 목표가 됩니다. 1년차에 기준선을 확보하고, 2년차부터 개선 폭을 목표로 관리하는 것이 타당합니다.
+  </div>
+
+  <h3>4.5 리스크 및 대응 방안</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:56px">No</th><th style="width:200px">리스크</th><th class="c" style="width:86px">영향도</th><th>대응 방안</th></tr></thead>
+    <tbody>
+      <tr><td class="c">R1</td><td><strong>담당자 겸임에 따른 실행력 저하</strong></td><td class="c"><span class="b b-rust">높음</span></td>
+        <td>과제를 5~7건으로 제한하고, 협의체에서 월 단위로 진척을 점검하여 지연 시 범위를 조정</td></tr>
+      <tr><td class="c">R2</td><td><strong>보안 기준 미비 상태의 AI 사용</strong></td><td class="c"><span class="b b-rust">높음</span></td>
+        <td>기준 확정 전까지 배합·공정조건·고객정보의 외부 AI 입력을 잠정 금지하고 사내 공지</td></tr>
+      <tr><td class="c">R3</td><td><strong>외주 의존에 따른 운영 중단</strong></td><td class="c"><span class="b b-amber">중간</span></td>
+        <td>계약에 재학습·유지보수 조건을 명시하고, 사내 Key User가 운영 인수인계를 받도록 규정</td></tr>
+      <tr><td class="c">R4</td><td><strong>성과 미가시화에 따른 동력 상실</strong></td><td class="c"><span class="b b-amber">중간</span></td>
+        <td>Quick Win을 상반기에 배치하여 M7 시점에 가시적 성과를 공유, 후속 과제 지지 확보</td></tr>
+      <tr><td class="c">R5</td><td><strong>사업 환경 변화에 따른 예산 축소</strong></td><td class="c"><span class="b b-amber">중간</span></td>
+        <td>예산 의존도가 낮은 과제(T1·T2·T3)를 선행 배치하여, 예산 축소 시에도 기반은 유지되도록 설계</td></tr>
+      <tr><td class="c">R6</td><td><strong>데이터 활용 범위의 계약상 제약</strong></td><td class="c"><span class="b b-blue">확인 필요</span></td>
+        <td>기술 라이선스 계약상 데이터 활용 범위를 사전 검토하고, 필요 시 별도 협의 진행</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>4.6 소요 자원</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th style="width:130px">구분</th><th style="width:180px">항목</th><th>내용</th><th class="c" style="width:100px">비고</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2"><strong>인적 자원</strong></td><td>AX 책임자</td><td>기존 인력 겸임 지정, 신규 채용 없음</td><td class="c">증원 없음</td></tr>
+      <tr><td>부서별 Key User</td><td>제조·품질·생산기술·경영지원 각 1인 겸임</td><td class="c">증원 없음</td></tr>
+      <tr><td rowspan="2"><strong>시스템</strong></td><td>데이터 저장 환경</td><td>기존 MES·ERP 활용, 부족 시 저장 용량 증설</td><td class="c">산정 필요</td></tr>
+      <tr><td>분석 도구</td><td>기존 시스템 위 분석 계층 적용, 신규 플랫폼 도입 배제</td><td class="c">산정 필요</td></tr>
+      <tr><td rowspan="2"><strong>외부 자원</strong></td><td>외주 개발</td><td>Quick Win 및 추적체계 구축 시 부분 활용</td><td class="c">산정 필요</td></tr>
+      <tr><td>정부 지원과제</td><td>적격성 확인 후 신청, 확보 시 자체 예산 부담 경감</td><td class="c">확보 시 반영</td></tr>
+      <tr><td><strong>교육</strong></td><td>Key User 역량 교육</td><td>모회사 교육 프로그램 또는 외부 과정 활용</td><td class="c">산정 필요</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <b>예산 관련 안내</b> — 구체적 금액은 과제 범위 확정 후 별도 산정이 필요하여 본 보고서에서는 항목만 제시했습니다. 다만 Phase 0의 세 개 과제(T1·T2·T3 착수)는 <strong>추가 예산 없이 실행 가능</strong>하므로, 예산 승인과 무관하게 우선 착수할 것을 건의드립니다.
+  </div>
+</section>
+
+<!-- ============ 5. 건의사항 ============ -->
+<section id="s5">
+  <p class="snum">SECTION 05</p>
+  <h2>결론 및 건의사항</h2>
+
+  <h3>5.1 결론</h3>
+  <p class="lead">본 분석의 결론은 세 문장으로 요약됩니다.</p>
+  <div class="tw">
+  <table>
+    <tbody>
+      <tr><td class="c" style="width:56px"><strong>1</strong></td><td>AX 추진의 실제 전장은 조직·프로세스·데이터·거버넌스 4개 영역이며, 사업 구조에서 비롯된 약점은 별도 의제로 분리해야 합니다.</td></tr>
+      <tr><td class="c"><strong>2</strong></td><td>가장 먼저 해야 할 것은 예산이 필요한 시스템 도입이 아니라 <strong>책임자 지정과 보안 기준 확정</strong>이며, 이는 오늘 결정할 수 있는 사안입니다.</td></tr>
+      <tr><td class="c"><strong>3</strong></td><td>공정 데이터 축적은 성과가 즉시 보이지 않지만, 지연 비용이 복리로 누적되는 유일한 영역이므로 승인 절차와 병행하여 즉시 착수해야 합니다.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>5.2 건의사항</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th class="c" style="width:56px">No</th><th style="width:230px">건의 내용</th><th>사유</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><strong>1</strong></td><td><strong>AX 추진 책임자 겸임 지정 승인</strong></td>
+        <td>추가 인건비 없이 실행 가능하며, 이 결정 없이는 후속 과제 전체가 진행되지 않습니다</td></tr>
+      <tr><td class="c"><strong>2</strong></td><td><strong>AI 사용정책 수립 착수 승인</strong></td>
+        <td>현재 기준 부재 상태에서 현업의 개별 AI 사용이 이루어질 경우 핵심 기술정보 유출 위험이 있습니다</td></tr>
+      <tr><td class="c"><strong>3</strong></td><td><strong>공정 데이터 저장 개시에 대한 사전 승인</strong></td>
+        <td>축적 시점이 3년차 활용 가능성을 결정하므로, 전체 예산 확정 이전에 저장부터 시작할 필요가 있습니다</td></tr>
+      <tr><td class="c"><strong>4</strong></td><td><strong>Quick Win 시범과제 1건 지정</strong></td>
+        <td>가시적 성과를 통해 조직 내 AX 필요성에 대한 인식을 형성하고 후속 과제의 지지 기반을 확보합니다</td></tr>
+      <tr><td class="c"><strong>5</strong></td><td><strong>기술 라이선스상 데이터 활용 범위 사전 검토</strong></td>
+        <td>2~3년차 소재개발 AX 과제의 실행 가능성이 이 검토 결과에 좌우됩니다</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>5.3 즉시 조치 사항 (최초 30일)</h3>
+  <div class="cards">
+    <div class="card t-rust"><div class="k">Week 1–2</div><div class="v">AX 책임자 지정</div>
+      <p>겸임으로 충분하되 직책과 권한을 문서로 명시합니다.</p></div>
+    <div class="card t-amber"><div class="k">Week 2–3</div><div class="v">AI 사용 기준 1차 공지</div>
+      <p>배합·공정조건·고객정보의 외부 AI 입력 금지 원칙부터 우선 공지합니다.</p></div>
+    <div class="card t-teal"><div class="k">Week 3–4</div><div class="v">Quick Win 과제 선정</div>
+      <p>반복도가 가장 높은 문서·분석 업무 1건을 선정합니다.</p></div>
+    <div class="card t-blue"><div class="k">병행</div><div class="v">배치번호 체계 정리 착수</div>
+      <p>승인 절차와 무관하게 데이터 축적을 위한 사전 정비를 시작합니다.</p></div>
+  </div>
+
+  <div class="quote">
+    <p>먼저 해야 할 것은 책임자 지정이고, 먼저 보여줘야 할 것은 Quick Win입니다.</p>
+    <span>두 사안을 하나의 품의로 묶어 상신할 것을 건의드립니다.</span>
+  </div>
+</section>
+
+<footer>
+  <span>에스유머티리얼스 AX 전환 전략 보고서</span>
+  <span>사내 보고용 · 대외 배포 금지</span>
+</footer>
+
+</div>
+</body>
+</html>
