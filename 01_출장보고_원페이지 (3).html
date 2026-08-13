@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>출장 보고 원페이지 요약 | 링키지랩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+
+  :root{
+    --ink:#14232B;
+    --ink2:#4A5C66;
+    --ink3:#7A8A92;
+    --paper:#F1F3F0;
+    --card:#FFFFFF;
+    --rule:#DCE2DE;
+    --rule2:#EDF0EC;
+    --seoul:#6B7A80;
+    --jeju:#10695F;
+    --busan:#1D4E7C;
+    --gold:#9A6F1E;
+    --warn:#A6431F;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+    font-size:14px;
+    line-height:1.62;
+    letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .num{font-family:"Instrument Serif","Iowan Old Style","Times New Roman",serif;font-weight:400;letter-spacing:0;}
+
+  .wrap{max-width:940px;margin:0 auto;padding:28px 20px 80px;}
+
+  .sheet{
+    background:var(--card);
+    border:1px solid var(--rule);
+    padding:44px 44px 40px;
+    margin-bottom:26px;
+  }
+
+  /* ── 머리말 ────────────────────────── */
+  .eyebrow{
+    font-size:11px;letter-spacing:0.14em;font-weight:600;
+    color:var(--ink3);text-transform:none;margin:0 0 14px;
+  }
+  h1{
+    font-size:29px;line-height:1.28;font-weight:700;
+    margin:0 0 8px;letter-spacing:-0.03em;
+  }
+  .sub{
+    font-size:14px;color:var(--ink2);margin:0 0 24px;font-weight:500;
+  }
+  .sub .dot{color:var(--rule);margin:0 7px;}
+
+  .metaline{
+    display:flex;flex-wrap:wrap;gap:0;
+    border-top:1.5px solid var(--ink);
+    border-bottom:1px solid var(--rule);
+    margin-bottom:30px;
+  }
+  .metaline div{
+    flex:1 1 25%;min-width:150px;
+    padding:12px 16px 12px 0;
+  }
+  .metaline dt{
+    font-size:10.5px;color:var(--ink3);font-weight:600;
+    letter-spacing:0.08em;margin:0 0 3px;
+  }
+  .metaline dd{margin:0;font-size:14px;font-weight:600;}
+
+  /* ── 시그니처: 출장 동선 리본 ─────────── */
+  .ribbon{margin:0 0 32px;}
+  .ribbon-head{
+    display:flex;align-items:baseline;gap:10px;margin-bottom:12px;
+  }
+  .ribbon-head h2{font-size:13px;font-weight:700;margin:0;letter-spacing:-0.01em;}
+  .ribbon-head span{font-size:11.5px;color:var(--ink3);}
+
+  .rgrid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .rday{
+    border-right:1px solid var(--rule2);
+    padding:11px 9px 0;
+    text-align:center;
+  }
+  .rday:last-child{border-right:none;}
+  .rdate{font-size:23px;line-height:1;display:block;}
+  .rdow{font-size:10.5px;color:var(--ink3);display:block;margin-top:4px;font-weight:600;}
+
+  .rband{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    margin-top:10px;
+  }
+  .rseg{
+    padding:5px 6px;font-size:11px;font-weight:700;color:#fff;
+    text-align:center;letter-spacing:0.03em;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .s-seoul{background:var(--seoul);}
+  .s-jeju{background:var(--jeju);}
+  .s-busan{background:var(--busan);}
+
+  .rmove{
+    grid-column:1 / -1;
+    display:grid;grid-template-columns:repeat(7,1fr);
+    border-bottom:1px solid var(--rule2);
+  }
+  .rmove div{
+    border-right:1px solid var(--rule2);
+    padding:7px 6px;font-size:10.5px;text-align:center;
+    color:var(--ink2);font-weight:600;min-height:30px;
+  }
+  .rmove div:last-child{border-right:none;}
+  .rmove .mv{color:var(--ink);}
+
+  .rtask{
+    grid-column:1 / -1;
+    display:grid;grid-template-columns:repeat(7,1fr);
+  }
+  .rtask div{
+    border-right:1px solid var(--rule2);
+    padding:9px 8px 12px;font-size:11px;line-height:1.45;
+    color:var(--ink2);text-align:center;
+  }
+  .rtask div:last-child{border-right:none;}
+  .rtask > div > b{display:block;color:var(--ink);font-weight:700;font-size:11px;margin-bottom:2px;}
+
+  /* ── 예산 요약 ───────────────────────── */
+  .sec-label{
+    font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--ink3);
+    padding-bottom:7px;border-bottom:1.5px solid var(--ink);
+    margin:0 0 14px;
+  }
+
+  .budget{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:14px;}
+  .bcell{background:var(--card);padding:14px 14px 15px;}
+  .bcell .bl{font-size:11.5px;color:var(--ink2);font-weight:600;margin-bottom:6px;line-height:1.35;min-height:32px;}
+  .bcell .bv{font-size:21px;line-height:1;}
+  .bcell .bv small{font-size:12px;font-family:"Pretendard",sans-serif;margin-left:2px;color:var(--ink2);}
+  .bcell .bp{font-size:10.5px;color:var(--ink3);margin-top:5px;font-weight:600;}
+
+  .btotal{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--ink);color:#fff;padding:13px 18px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    margin-bottom:30px;
+  }
+  .btotal span{font-size:12px;font-weight:700;letter-spacing:0.1em;}
+  .btotal strong{font-size:25px;font-weight:400;}
+
+  /* ── 결재 요청 ───────────────────────── */
+  .asks{list-style:none;padding:0;margin:0 0 6px;}
+  .asks li{
+    display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--rule2);
+  }
+  .asks li:last-child{border-bottom:none;}
+  .asks .k{
+    flex:0 0 26px;font-size:19px;color:var(--gold);line-height:1.1;
+  }
+  .asks .t{font-size:13.5px;}
+  .asks .t > b{display:block;margin-bottom:2px;font-weight:700;}
+  .asks .t span{color:var(--ink2);font-size:12.5px;}
+
+  /* ── 표 ─────────────────────────────── */
+  .tblhead{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;margin:30px 0 10px;
+  }
+  .tblhead h3{
+    font-size:15px;font-weight:700;margin:0;letter-spacing:-0.02em;
+  }
+  .tblhead h3 em{
+    font-style:normal;color:var(--ink2);font-weight:600;font-size:13px;margin-left:8px;
+  }
+  table{
+    width:100%;border-collapse:collapse;font-size:12.5px;
+    border-top:1.5px solid var(--ink);
+  }
+  th{
+    text-align:left;font-weight:700;font-size:11.5px;color:var(--ink2);
+    padding:9px 10px;border-bottom:1px solid var(--rule);
+    background:#FAFBFA;white-space:nowrap;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  td{
+    padding:9px 10px;border-bottom:1px solid var(--rule2);vertical-align:top;
+  }
+  tbody tr:last-child td{border-bottom:1px solid var(--rule);}
+  .r{text-align:right;white-space:nowrap;}
+  .c{text-align:center;white-space:nowrap;}
+  .sumrow td{background:#F7F9F7;font-weight:700;border-bottom:1.5px solid var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .note{font-size:11.5px;color:var(--ink2);}
+  td a{color:var(--busan);text-decoration:underline;text-underline-offset:2px;word-break:break-all;}
+
+  .tag{
+    display:inline-block;font-size:10px;font-weight:700;color:#fff;
+    padding:2px 6px;border-radius:2px;letter-spacing:0.02em;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .t-jeju{background:var(--jeju);}
+  .t-busan{background:var(--busan);}
+  .t-seoul{background:var(--seoul);}
+
+  .foot{
+    margin-top:34px;padding-top:16px;border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--ink3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+
+  /* ── 복사 버튼 ───────────────────────── */
+  .copy-btn{
+    font-family:inherit;font-size:11px;font-weight:700;letter-spacing:0.02em;
+    background:var(--card);color:var(--ink2);
+    border:1px solid var(--rule);border-radius:2px;
+    padding:5px 11px;cursor:pointer;white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .copy-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .copy-btn:focus-visible{outline:2px solid var(--busan);outline-offset:2px;}
+  .copy-btn.done{background:var(--jeju);color:#fff;border-color:var(--jeju);}
+
+  /* ── 기안용 텍스트 ───────────────────── */
+  .draftbox{
+    border:1px solid var(--rule);background:#FBFCFB;
+    padding:0;margin-top:14px;
+  }
+  .draftbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:11px 14px;border-bottom:1px solid var(--rule);gap:12px;
+  }
+  .draftbar strong{font-size:12.5px;}
+  .draftbar span{font-size:11px;color:var(--ink3);}
+  pre.draft{
+    margin:0;padding:18px 16px;font-family:"Pretendard",monospace;
+    font-size:12.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;
+    max-height:520px;overflow:auto;color:var(--ink);
+  }
+  .helper{font-size:12px;color:var(--ink2);margin:10px 0 0;}
+
+  .toolbar{
+    position:sticky;top:0;z-index:20;background:rgba(241,243,240,.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    padding:10px 0;margin:-28px 0 24px;
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  }
+  .toolbar .tl{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:0.08em;margin-right:4px;}
+
+  .rday.gap,.rmove .gap,.rtask .gap{
+    border-right:2px dashed var(--rule);background:#FBFCFA;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+
+  /* ── 사전 지원 스트립 ─────────────────── */
+  .pre{
+    border:1px solid var(--rule);border-left:3px solid var(--seoul);
+    background:#FAFBFA;padding:11px 14px;margin-bottom:14px;
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .pre .pd{font-size:18px;line-height:1;white-space:nowrap;}
+  .pre .pd small{font-size:11px;font-family:"Pretendard",sans-serif;color:var(--ink3);margin-left:6px;font-weight:600;}
+  .pre .pt{font-size:12.5px;line-height:1.5;}
+  .pre .pt b{font-weight:700;}
+  .pre .pt i{font-style:normal;color:var(--warn);font-weight:700;}
+
+  /* ── 9월 달력 ───────────────────────── */
+  .cal{margin:0 0 30px;}
+  .calgrid{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    border:1px solid var(--rule);border-bottom:none;
+  }
+  .cdow{
+    padding:7px 8px;font-size:10.5px;font-weight:700;color:var(--ink3);
+    text-align:center;background:#FAFBFA;border-bottom:1px solid var(--rule);
+    border-right:1px solid var(--rule2);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .cdow:last-child{border-right:none;}
+  .cdow.sun{color:var(--warn);}
+
+  .cday{
+    min-height:34px;padding:6px 7px 8px;
+    border-right:1px solid var(--rule2);border-bottom:1px solid var(--rule2);
+    font-size:11px;
+  }
+  .cday:nth-child(7n){border-right:none;}
+  .cday.pad{background:#FCFDFC;}
+  .cday .cnum{font-size:13px;color:var(--ink3);display:block;line-height:1.2;}
+  .cday.on{min-height:96px;background:#fff;}
+  .cday.on .cnum{color:var(--ink);font-weight:700;font-size:14px;}
+  .cday.on.sun .cnum{color:var(--warn);}
+  .cloc{
+    display:block;margin:5px 0 4px;padding:2px 5px;border-radius:2px;
+    font-size:9.5px;font-weight:700;color:#fff;text-align:center;letter-spacing:0.02em;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .cmv{display:block;font-size:9.5px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:3px;}
+  .cwho{display:block;font-size:9.5px;color:var(--ink2);line-height:1.4;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:10.5px;color:var(--ink2);align-items:center;}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+  /* ── 인원 구성 ──────────────────────── */
+  .roster{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);}
+  .rcol{background:var(--card);padding:12px 14px 13px;}
+  .rcol.alt{background:#FBFAF6;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .rcol .rt{display:block;font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:0.06em;margin-bottom:5px;}
+  .rcol .rt b{font-size:17px;color:var(--ink);margin-left:4px;font-weight:400;}
+  .rcol .rn{display:block;font-size:13px;font-weight:600;line-height:1.5;}
+  .rcol .rn em{font-style:normal;font-size:11px;color:var(--warn);font-weight:600;display:block;margin-top:2px;}
+
+  .notice{
+    border:1px solid var(--rule);border-left:3px solid var(--gold);
+    background:#FCFBF7;padding:18px 22px 6px;margin:16px 0 0;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .notice .ntitle{
+    font-size:12px;font-weight:700;letter-spacing:0.08em;color:var(--gold);
+    margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--rule);
+  }
+  .nitem{display:flex;gap:14px;padding:0 0 16px;}
+  .nitem .nk{
+    flex:0 0 22px;height:22px;border-radius:50%;background:var(--gold);color:#fff;
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    margin-top:2px;-webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .nitem .nb{flex:1;}
+  .nitem .nb > b{display:block;font-size:13.5px;margin-bottom:7px;}
+  .nitem .nb p{margin:0;font-size:12.5px;line-height:1.75;color:var(--ink2);}
+
+  /* ── 근태 매트릭스 ───────────────────── */
+  .mx{border-top:1.5px solid var(--ink);font-size:11px;}
+  .mx th{padding:7px 4px;font-size:10.5px;text-align:center;}
+  .mx th.who{text-align:left;width:74px;}
+  .mx td{padding:4px 3px;text-align:center;vertical-align:middle;}
+  .mx td.who{text-align:left;font-weight:700;font-size:11.5px;padding-left:8px;}
+  .mx td.who em{display:block;font-style:normal;font-size:9.5px;color:var(--ink3);font-weight:600;}
+  .st{
+    display:block;font-size:10px;font-weight:700;padding:4px 2px;border-radius:2px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .st-pre{background:#6B7A80;color:#fff;}
+  .st-trip{background:#1D4E7C;color:#fff;}
+  .st-trip2{background:#10695F;color:#fff;}
+  .st-leave{background:#E4E8E3;color:#54646C;}
+  .st-tbd{background:#F5E6CE;color:#8A5A15;border:1px dashed #C79A45;}
+  .st-none{color:#CBD2CC;font-size:11px;}
+  .mv2{display:block;font-size:9px;color:var(--ink2);margin-top:2px;line-height:1.25;font-weight:600;}
+
+
+  @media (max-width:760px){
+    .sheet{padding:26px 20px 26px;}
+    .calwrap,.mxwrap{overflow-x:auto;}
+    .calgrid{min-width:600px;}
+    .mx{min-width:620px;}
+    .roster{grid-template-columns:1fr;}
+    h1{font-size:23px;}
+    .budget{grid-template-columns:repeat(2,1fr);}
+    .rdate{font-size:17px;}
+    .rtask div,.rmove div{font-size:10px;padding-left:4px;padding-right:4px;}
+    .rseg{font-size:9.5px;}
+    .tblwrap{overflow-x:auto;}
+    table{min-width:640px;}
+    .metaline div{flex:1 1 50%;}
+  }
+
+  @media print{
+    @page{size:A4;margin:12mm;}
+    body{background:#fff;font-size:10.5px;}
+    .wrap{max-width:none;padding:0;}
+    .sheet{border:none;padding:0;margin:0 0 10mm;}
+    .toolbar,.no-print{display:none !important;}
+    .page-break{page-break-before:always;}
+    table{font-size:9.5px;}
+    th,td{padding:5px 6px;}
+    h1{font-size:21px;}
+    tr,li{page-break-inside:avoid;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar no-print">
+    <span class="tl">원페이지 요약</span>
+    <button class="copy-btn" onclick="window.print()">인쇄 / PDF 저장 (A4 1장)</button>
+  </div>
+<section class="sheet">
+
+  <p class="eyebrow">링키지랩 · 전략 / PR 유닛 · 출장 보고</p>
+  <h1>선수단 대회 지원 및 현장 촬영 출장 보고</h1>
+  <p class="sub">제주 <span class="dot">/</span> 부산 <span class="dot">·</span> 2026. 9. 13(일) ~ 9. 18(금), 5박 6일 <span class="dot">·</span> 사전 지원 8. 29(토) 별도</p>
+
+  <div class="metaline">
+    <div><dt>보고자</dt><dd>링키지랩 전략/PR 유닛</dd></div>
+    <div><dt>인원 구성</dt><dd>총 9명 (선수 4명 · 지원 5명)</dd></div>
+    <div><dt>출장 목적</dt><dd>대회 참가 지원 · 전 일정 촬영</dd></div>
+    <div><dt>총 소요 예산</dt><dd>4,600,000원</dd></div>
+  </div>
+
+  <!-- 시그니처: 출장 동선 리본 -->
+  <div class="ribbon">
+    <div class="ribbon-head">
+      <h2>출장 동선 <span style="font-weight:600;color:var(--ink2);">(제이크)</span></h2>
+      <span>사전 지원 8/29 <span style="color:var(--rule);">→</span> 본 출장 9/13 서울 → 제주 → 부산 → 서울 / 제이크 1인 전 구간 동행</span>
+    </div>
+    <div class="rgrid">
+      <div class="rday gap"><span class="num rdate">08.29</span><span class="rdow">토 · 사전</span></div>
+      <div class="rday"><span class="num rdate">09.13</span><span class="rdow">일</span></div>
+      <div class="rday"><span class="num rdate">09.14</span><span class="rdow">월</span></div>
+      <div class="rday"><span class="num rdate">09.15</span><span class="rdow">화</span></div>
+      <div class="rday"><span class="num rdate">09.16</span><span class="rdow">수</span></div>
+      <div class="rday"><span class="num rdate">09.17</span><span class="rdow">목</span></div>
+      <div class="rday"><span class="num rdate">09.18</span><span class="rdow">금</span></div>
+
+      <div class="rband">
+        <div class="rseg s-seoul" style="grid-column:1 / span 1;">서울 동작구</div>
+        <div class="rseg s-jeju" style="grid-column:2 / span 2;">제주 · 2박</div>
+        <div class="rseg s-busan" style="grid-column:4 / span 3;">부산 · 3박</div>
+        <div class="rseg s-seoul" style="grid-column:7 / span 1;">복귀</div>
+      </div>
+
+      <div class="rmove">
+        <div class="gap">서울 동작구</div>
+        <div class="mv">항공<br>김포→제주</div>
+        <div>제주 체류</div>
+        <div class="mv">항공<br>제주→김해</div>
+        <div>부산 체류</div>
+        <div>부산 체류</div>
+        <div class="mv">SRT<br>부산→수서</div>
+      </div>
+
+      <div class="rtask">
+        <div class="gap"><b>사전 지원</b>쇼다운 연습 촬영<br>카페 사업 <i style="font-style:normal;color:var(--warn);">(협의중)</i></div>
+        <div><b>쇼다운</b>16강전 ~ 결승 촬영</div>
+        <div><b>쇼다운 · 수영</b>경기 촬영 · 스케치<br>서귀포 왕복</div>
+        <div><b>부산 표준사업장</b>미팅 등<br>선수단 1진 합류</div>
+        <div><b>데이터 입력</b>웹디자인개발<br>선수단 2진 합류</div>
+        <div><b>사무행정</b>바리스타<br>촬영</div>
+        <div><b>폐회식</b>참석 후 복귀<br>일정에 따라 변경</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시그니처 2: 9월 달력 -->
+  <div class="cal">
+    <div class="ribbon-head">
+      <h2>2026년 9월</h2>
+      <span>전체 인원 일정 확인</span>
+    </div>
+    <div class="pre">
+      <span class="num pd">08.29<small>토 · 사전 지원</small></span>
+      <span class="pt"><b>쇼다운 연습 촬영</b> · <b>카페 사업</b> <i>(협의중)</i><br><span style="color:var(--ink2);">본 출장 전 사전 지원일 · 서울 동작구 / 식사 지원 5명</span></span>
+    </div>
+    <div class="calwrap">
+    <div class="calgrid">
+      <div class="cdow sun">일</div><div class="cdow">월</div><div class="cdow">화</div><div class="cdow">수</div><div class="cdow">목</div><div class="cdow">금</div><div class="cdow">토</div>
+
+      <div class="cday pad"></div><div class="cday pad"></div>
+      <div class="cday"><span class="num cnum">1</span></div>
+      <div class="cday"><span class="num cnum">2</span></div>
+      <div class="cday"><span class="num cnum">3</span></div>
+      <div class="cday"><span class="num cnum">4</span></div>
+      <div class="cday"><span class="num cnum">5</span></div>
+
+      <div class="cday sun"><span class="num cnum">6</span></div>
+      <div class="cday"><span class="num cnum">7</span></div>
+      <div class="cday"><span class="num cnum">8</span></div>
+      <div class="cday"><span class="num cnum">9</span></div>
+      <div class="cday"><span class="num cnum">10</span></div>
+      <div class="cday"><span class="num cnum">11</span></div>
+      <div class="cday"><span class="num cnum">12</span></div>
+
+      <div class="cday on sun"><span class="num cnum">13</span>
+        <span class="cloc s-jeju">제주 · 1박</span>
+        <span class="cmv">✈ 김포 → 제주</span>
+        <span class="cwho"><b>제이크</b> 출장 시작<br><b>쇼다운</b> 16강~결승</span>
+      </div>
+      <div class="cday on"><span class="num cnum">14</span>
+        <span class="cloc s-jeju">제주 · 2박</span>
+        <span class="cmv">🚗 서귀포 왕복 (레이)</span>
+        <span class="cwho"><b>쇼다운 · 수영</b><br>경기 촬영·스케치</span>
+      </div>
+      <div class="cday on"><span class="num cnum">15</span>
+        <span class="cloc s-busan">부산 · 1박</span>
+        <span class="cmv">✈ 제주 → 김해<br>🚄 KTX 서울 → 부산</span>
+        <span class="cwho"><b>부산 표준사업장 미팅</b> 등<br><b>출장</b> 제이크·율·루나·폴·칸</span>
+      </div>
+      <div class="cday on"><span class="num cnum">16</span>
+        <span class="cloc s-busan">부산 · 2박</span>
+        <span class="cmv">🚄 SRT 서울 → 부산</span>
+        <span class="cwho"><b>데이터 입력</b> 촬영<br><b>웹디자인개발</b> (칸)<br><b>출장</b> 제이크·율·루나·멜로<br>린지·샘·카일<br><b>공가</b> 폴 (복귀)</span>
+      </div>
+      <div class="cday on"><span class="num cnum">17</span>
+        <span class="cloc s-busan">부산 · 3박</span>
+        <span class="cmv">🚄 SRT 부산 → 서울</span>
+        <span class="cwho"><b>사무행정·바리스타</b> 촬영<br><b>출장</b> 제이크·멜로·린지<br><b>공가</b> 샘·카일 (복귀)</span>
+      </div>
+      <div class="cday on"><span class="num cnum">18</span>
+        <span class="cloc s-seoul">복귀</span>
+        <span class="cmv">🚄 SRT 부산 → 수서</span>
+        <span class="cwho"><b>폐회식</b> 참석<br>제이크 복귀<br>(일정에 따라 변경)</span>
+      </div>
+
+      <div class="cday"><span class="num cnum">19</span></div>
+
+      <div class="cday sun"><span class="num cnum">20</span></div>
+      <div class="cday"><span class="num cnum">21</span></div>
+      <div class="cday"><span class="num cnum">22</span></div>
+      <div class="cday"><span class="num cnum">23</span></div>
+      <div class="cday"><span class="num cnum">24</span></div>
+      <div class="cday"><span class="num cnum">25</span></div>
+      <div class="cday"><span class="num cnum">26</span></div>
+
+      <div class="cday sun"><span class="num cnum">27</span></div>
+      <div class="cday"><span class="num cnum">28</span></div>
+      <div class="cday"><span class="num cnum">29</span></div>
+      <div class="cday"><span class="num cnum">30</span></div>
+      <div class="cday pad"></div><div class="cday pad"></div><div class="cday pad"></div>
+    </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--seoul);"></i>서울</span>
+      <span><i style="background:var(--jeju);"></i>제주</span>
+      <span><i style="background:var(--busan);"></i>부산</span>
+      <span>✈ 항공</span><span>🚄 철도</span><span>🚗 렌트카</span>
+    </div>
+  </div>
+
+  <!-- 인원 구성 -->
+  <p class="sec-label">인원 구성 <span style="font-weight:600;letter-spacing:0;">— 총 9명</span></p>
+  <div class="roster">
+    <div class="rcol">
+      <span class="rt">선수 <b class="num">4</b></span>
+      <span class="rn">샘 · 폴 · 카일 · 칸</span>
+    </div>
+    <div class="rcol">
+      <span class="rt">지원 <b class="num">5</b></span>
+      <span class="rn">율 · 멜로 · 린지 · 제이크 · 루나</span>
+    </div>
+  </div>
+
+  <!-- 근태 매트릭스 -->
+  <p class="sec-label" style="margin-top:26px;">인원별 근태 처리 (출장 / 공가)</p>
+  <div class="mxwrap">
+  <table class="mx" id="t0">
+    <thead>
+      <tr>
+        <th class="who">인원</th>
+        <th>8/29<br>토</th><th>9/13<br>일</th><th>9/14<br>월</th><th>9/15<br>화</th><th>9/16<br>수</th><th>9/17<br>목</th><th>9/18<br>금</th>
+        <th style="width:150px;text-align:left;">교통편</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="who">제이크<em>지원 · 촬영</em></td>
+        <td><span class="st st-pre">사전</span><span class="mv2">쇼다운 연습</span></td>
+        <td><span class="st st-trip2">출장</span><span class="mv2">✈ 제주</span></td>
+        <td><span class="st st-trip2">출장</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">✈ 김해</span></td>
+        <td><span class="st st-trip">출장</span></td>
+        <td><span class="st st-trip">출장</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 복귀</span></td>
+        <td style="text-align:left;" class="note">항공 2회 + SRT 1회<br><b>9/13~18 전 일정 출장 처리</b></td>
+      </tr>
+      <tr>
+        <td class="who">율<em>지원</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">KTX 9/15~16 (1진)</td>
+      </tr>
+      <tr>
+        <td class="who">루나<em>지원</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">KTX 9/15~16 (1진) / 별도</td>
+      </tr>
+      <tr>
+        <td class="who">폴<em>선수</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-leave">공가</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">KTX 9/15~16 (1진)</td>
+      </tr>
+      <tr>
+        <td class="who">멜로<em>지원</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">SRT 9/16~17 (2진)</td>
+      </tr>
+      <tr>
+        <td class="who">린지<em>지원</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">SRT 9/16~17 (2진)</td>
+      </tr>
+      <tr>
+        <td class="who">샘<em>선수</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-leave">공가</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">SRT 9/16~17 (2진)</td>
+      </tr>
+      <tr>
+        <td class="who">카일<em>선수</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span><span class="mv2">🚄 부산</span></td>
+        <td><span class="st st-leave">공가</span><span class="mv2">🚄 복귀</span></td>
+        <td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">SRT 9/16~17 (2진)</td>
+      </tr>
+      <tr>
+        <td class="who">칸<em>선수</em></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td><span class="st st-trip">출장</span></td>
+        <td><span class="st st-leave">공가</span></td>
+        <td><span class="st-none">·</span></td><td><span class="st-none">·</span></td>
+        <td style="text-align:left;" class="note">개인 이동 (자율)<br>웹디자인개발 종목</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend" style="margin-bottom:6px;">
+    <span><i style="background:#6B7A80;"></i>사전 지원 (8/29)</span>
+    <span><i style="background:#10695F;"></i>출장 (제주)</span>
+    <span><i style="background:#1D4E7C;"></i>출장 (부산)</span>
+    <span><i style="background:#E4E8E3;"></i>공가</span>
+  </div>
+
+  <div class="notice">
+    <p class="ntitle">이동 및 숙소 안내</p>
+    <div class="nitem">
+      <span class="nk">1</span>
+      <div class="nb">
+        <b>동일 차편 배차 — 안전 사유</b>
+        <p>멜로, 린지, 샘, 카일 4인은 안전상의 이유로 반드시 같은 차편으로 이동할 수 있도록 배차할 예정이며, 해당 구간은 SRT 9월 16일(수)부터 9월 17일(목)까지입니다. 숙소 또한 4인이 동일 위치의 숙소로 배정되도록 진행하겠습니다.</p>
+      </div>
+    </div>
+    <div class="nitem">
+      <span class="nk">2</span>
+      <div class="nb">
+        <b>공단 제공 숙소 활용 — 참여 선수 7인</b>
+        <p>장애인기능경기대회에 참여하는 율, 루나, 멜로, 린지, 폴, 카일, 샘 7인은 한국장애인고용공단에서 제공하는 숙소를 활용할 예정입니다. 배정 기준은 2인 1실이며, 해당 숙소 비용은 공단에서 지급하므로 별도 숙박비 편성은 없습니다. 다만 대회 일정 변경, 인원 변동, 공단 배정 취소 등의 사유가 발생할 경우 자체 숙박비가 추가로 발생할 수 있습니다.</p>
+      </div>
+    </div>
+    <div class="nitem">
+      <span class="nk">3</span>
+      <div class="nb">
+        <b>칸 — 대회 측 비용 별도 지급</b>
+        <p>칸의 경우 대회 측에서 사용 비용을 별도로 지급할 예정이며, 이동 또한 개인 일정에 따라 자율적으로 진행합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 예산 요약 -->
+  <p class="sec-label" style="margin-top:30px;">예산 총괄</p>
+  <div class="budget">
+    <div class="bcell">
+      <div class="bl">대회 지원<br>(선수단 교통·식사·이동)</div>
+      <div class="bv num">1,640,000<small>원</small></div>
+      <div class="bp">35.7%</div>
+    </div>
+    <div class="bcell">
+      <div class="bl">현장 스케치 및<br>전체 일정 촬영 지원</div>
+      <div class="bv num">2,135,000<small>원</small></div>
+      <div class="bp">46.4%</div>
+    </div>
+    <div class="bcell">
+      <div class="bl">물품<br>(제본기)</div>
+      <div class="bv num">299,000<small>원</small></div>
+      <div class="bp">6.5%</div>
+    </div>
+    <div class="bcell">
+      <div class="bl">기타 지원<br>(현수막 · 여분비용)</div>
+      <div class="bv num">526,000<small>원</small></div>
+      <div class="bp">11.4%</div>
+    </div>
+  </div>
+  <div class="btotal">
+    <span>총 소요 예산</span>
+    <strong class="num">4,600,000원</strong>
+  </div>
+  
+  <!-- 결재 요청 -->
+  <p class="sec-label">확인 사항</p>
+  <ul class="asks">
+    <li>
+      <span class="k num">01</span>
+      <span class="t">
+        <b>복귀일 확정 — 9/18(금) 폐회식 참석 기준</b>
+        <span>9/18 폐회식 참석 후 복귀를 기준으로 일정을 편성했습니다. 폐회식 일정이 앞당겨지거나 참석이 불필요해질 경우 9/17 복귀가 가능하며, 대회 진행 상황에 따라 확정하겠습니다.</span>
+      </span>
+    </li>
+    <li>
+      <span class="k num">02</span>
+      <span class="t">
+        <b>동일 차편 배차 — 안전 사유</b>
+        <span>멜로, 린지, 샘, 카일 4인은 안전상의 이유로 같은 차편(SRT 9/16~17)으로 배차 예정입니다. 예약 시 우선 반영 부탁드립니다.</span>
+      </span>
+    </li>
+    <li>
+      <span class="k num">03</span>
+      <span class="t">
+        <b>숙소 — 공단 제공 숙소 활용</b>
+        <span>장애인기능경기대회 참여 7인(율·루나·멜로·린지·폴·카일·샘)은 한국장애인고용공단 제공 숙소를 2인 1실로 활용할 예정이며, 칸은 대회 측에서 비용을 별도 지급합니다. 이에 따라 숙박비 편성은 없으나, 대회 일정이나 인원에 변동이 있을 경우 비용이 발생할 수 있습니다.</span>
+      </span>
+    </li>
+  </ul>
+
+  <div class="foot">
+    <span>링키지랩 전략/PR 유닛</span>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  function done(btn){var o=btn.textContent;btn.textContent="복사 완료";btn.classList.add("done");
+    setTimeout(function(){btn.textContent=o;btn.classList.remove("done");},1600);}
+  function legacy(t,cb){var ta=document.createElement("textarea");ta.value=t;ta.setAttribute("readonly","");
+    ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");cb();}catch(e){window.prompt("Ctrl+C 로 복사하세요",t);}
+    document.body.removeChild(ta);}
+  function wc(t,btn){if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(t).then(function(){done(btn);}).catch(function(){legacy(t,function(){done(btn);});});
+    }else{legacy(t,function(){done(btn);});}}
+  function t2t(tb){var rows=[];tb.querySelectorAll("tr").forEach(function(tr){var c=[];
+    tr.querySelectorAll("th,td").forEach(function(x){c.push(x.innerText.replace(/\s*\n\s*/g," ").trim());
+      var s=parseInt(x.getAttribute("colspan")||"1",10);for(var i=1;i<s;i++)c.push("");});
+    rows.push(c.join("\t"));});return rows.join("\n");}
+  document.addEventListener("click",function(e){var b=e.target.closest("button.copy-btn");if(!b)return;
+    var s=b.getAttribute("data-table");if(s){var t=document.querySelector(s);if(t)wc(t2t(t),b);}});
+})();
+</script>
+</body>
+</html>
